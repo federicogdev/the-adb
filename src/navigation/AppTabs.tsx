@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useTheme } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -9,6 +9,9 @@ import { CollectionsScreen } from "../screens/CollectionsScreen";
 import { SearchScreen } from "../screens/SearchScreen";
 
 import { AppTabsParams } from "../types/navigation";
+import { SettingsContext } from "../context/SettingsContext";
+import { useColorScheme } from "react-native";
+import { getBlurScheme } from "../utils/theme";
 
 const HomeStack = createNativeStackNavigator();
 const SearchStack = createNativeStackNavigator();
@@ -18,13 +21,15 @@ const Tabs = createBottomTabNavigator<AppTabsParams>();
 
 const HomeScreenStack = () => {
   const { colors } = useTheme();
+  const { theme } = useContext(SettingsContext);
+  const scheme = useColorScheme();
 
   return (
     <HomeStack.Navigator
       screenOptions={{
         headerTransparent: true,
         headerLargeTitle: true,
-        headerBlurEffect: "light",
+        headerBlurEffect: getBlurScheme(theme, scheme),
         headerLargeStyle: {
           backgroundColor: colors.background,
         },
@@ -37,13 +42,15 @@ const HomeScreenStack = () => {
 
 const CollectionsScreenStack = () => {
   const { colors } = useTheme();
+  const { theme } = useContext(SettingsContext);
+  const scheme = useColorScheme();
 
   return (
     <CollectionsStack.Navigator
       screenOptions={{
         headerTransparent: true,
         headerLargeTitle: true,
-        headerBlurEffect: "light",
+        headerBlurEffect: getBlurScheme(theme, scheme),
         headerLargeStyle: {
           backgroundColor: colors.background,
         },
@@ -59,13 +66,15 @@ const CollectionsScreenStack = () => {
 
 const SearchScreenStack = () => {
   const { colors } = useTheme();
+  const { theme } = useContext(SettingsContext);
+  const scheme = useColorScheme();
 
   return (
     <SearchStack.Navigator
       screenOptions={{
         headerTransparent: true,
         headerLargeTitle: true,
-        headerBlurEffect: "light",
+        headerBlurEffect: getBlurScheme(theme, scheme),
         headerLargeStyle: {
           backgroundColor: colors.background,
         },

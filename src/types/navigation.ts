@@ -3,3 +3,9 @@ export type AppTabsParams = {
   SearchScreen: undefined;
   CollectionsScreen: undefined;
 };
+
+export type AppStackParams = {
+  AppTabs: undefined;
+  SettingsScreen: undefined;
+  AnimeDetailsScreen: { id: number };
+};

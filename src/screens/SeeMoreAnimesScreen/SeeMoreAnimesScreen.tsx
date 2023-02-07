@@ -31,7 +31,7 @@ const SeeMoreAnimesScreen: FC<ISeeMoreAnimeScreenProps> = ({
   const fetchAnimes = ({ pageParam = 1 }): Promise<JikanResponse<Anime[]>> =>
     axios
       .get(
-        `https://api.jikan.moe/v4/top/anime?page=${pageParam}&filter=${title}&limit=12`
+        `https://api.jikan.moe/v4/top/anime?page=${pageParam}&filter=${title}&limit=24`
       )
       .then((res) => res.data);
 

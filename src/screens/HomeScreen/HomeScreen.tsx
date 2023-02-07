@@ -6,8 +6,8 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
+  Pressable,
 } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useQuery } from "@tanstack/react-query";
@@ -37,7 +37,7 @@ const HomeScreen: FC<IHomeScreenProps> = ({ navigation }) => {
 
   const topAnimes = useQuery(
     ["topAnimes"],
-    () => fetchAnimes(TopAnimeFilter.bypopularity, 9),
+    () => fetchAnimes(TopAnimeFilter.bypopularity, 6),
     { enabled: upcomingAnimes.isSuccess }
   );
 
@@ -55,14 +55,13 @@ const HomeScreen: FC<IHomeScreenProps> = ({ navigation }) => {
     <SafeArea>
       <ScrollView>
         <Box flexDirection="column" mBottom={20}>
-          <Box pX={15} mBottom={20} justify="space-between" align="center">
+          <Box pX={15} mBottom={10} justify="space-between" align="center">
             <Box flexDirection="column">
               <Typography variant="bold" size={22}>
                 Upcoming
               </Typography>
 
-              <Spacer y={3} />
-              <Typography color="subtext" size={16}>
+              <Typography color="subtext" size={15}>
                 Don't miss those.
               </Typography>
             </Box>
@@ -85,7 +84,7 @@ const HomeScreen: FC<IHomeScreenProps> = ({ navigation }) => {
             data={upcomingAnimes.data?.data}
             keyExtractor={(item) => item.mal_id.toString()}
             renderItem={({ item, index }) => (
-              <TouchableOpacity
+              <Pressable
                 onPress={() =>
                   navigation.push("AnimeDetailsScreen", {
                     id: item.mal_id,
@@ -101,20 +100,19 @@ const HomeScreen: FC<IHomeScreenProps> = ({ navigation }) => {
                 ]}
               >
                 <AnimeCover anime={item} width={150} />
-              </TouchableOpacity>
+              </Pressable>
             )}
           />
         </Box>
 
         <Box flexDirection="column" mBottom={20}>
-          <Box pX={15} mBottom={20} justify="space-between" align="center">
+          <Box pX={15} mBottom={10} justify="space-between" align="center">
             <Box flexDirection="column">
               <Typography variant="bold" size={22}>
                 Popular
               </Typography>
 
-              <Spacer y={3} />
-              <Typography color="subtext" size={16}>
+              <Typography color="subtext" size={15}>
                 Check users favorites.
               </Typography>
             </Box>
@@ -133,7 +131,7 @@ const HomeScreen: FC<IHomeScreenProps> = ({ navigation }) => {
           </Box>
           <View style={styles.grid}>
             {topAnimes.data?.data.map((item) => (
-              <TouchableOpacity
+              <Pressable
                 key={item.mal_id}
                 onPress={() =>
                   navigation.push("AnimeDetailsScreen", {
@@ -147,17 +145,21 @@ const HomeScreen: FC<IHomeScreenProps> = ({ navigation }) => {
                   width={(Dimensions.get("screen").width - 50) / 3}
                   multiline={false}
                 />
-              </TouchableOpacity>
+              </Pressable>
             ))}
           </View>
         </Box>
 
         <Box flexDirection="column" mBottom={20}>
-          <Box mBottom={20} justify="space-between" align="center" pX={15}>
+          <Box mBottom={10} justify="space-between" align="center" pX={15}>
             <Typography variant="bold" size={22}>
               Genres
             </Typography>
-            <Typography variant="bold" color="primary">
+            <Typography
+              variant="bold"
+              color="primary"
+              onPress={() => navigation.push("GenresScreen")}
+            >
               See More
             </Typography>
           </Box>

@@ -10,6 +10,7 @@ import { getBlurScheme } from "../utils/theme";
 import { useColorScheme } from "react-native";
 import { SettingsContext } from "../context/SettingsContext";
 import { SeeMoreAnimesScreen } from "../screens/SeeMoreAnimesScreen";
+import { GenresScreen } from "../screens/GenresScreen";
 
 const Stack = createNativeStackNavigator<AppStackParams>();
 
@@ -21,7 +22,7 @@ export const AppStack = () => {
     <Stack.Navigator
       screenOptions={{
         headerTransparent: true,
-        // headerLargeTitle: true,
+        headerLargeTitle: true,
         headerBlurEffect: getBlurScheme(theme, scheme),
         headerLargeStyle: {
           backgroundColor: colors.background,
@@ -39,6 +40,12 @@ export const AppStack = () => {
         name="SettingsScreen"
         component={SettingsScreen}
         options={{ title: "Settings" }}
+      />
+
+      <Stack.Screen
+        name="GenresScreen"
+        component={GenresScreen}
+        options={{ title: "Genres" }}
       />
 
       <Stack.Screen

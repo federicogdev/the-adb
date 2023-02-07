@@ -28,14 +28,14 @@ const HomeScreenStack = () => {
     <HomeStack.Navigator
       screenOptions={{
         headerTransparent: true,
-        // headerLargeTitle: true,
+        headerLargeTitle: true,
         headerBlurEffect: getBlurScheme(theme, scheme),
         headerLargeStyle: {
           backgroundColor: colors.background,
         },
       }}
     >
-      <HomeStack.Screen component={HomeScreen} name="Explore" />
+      <HomeStack.Screen component={HomeScreen} name="The ADB" />
     </HomeStack.Navigator>
   );
 };

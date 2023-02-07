@@ -67,7 +67,15 @@ const HomeScreen: FC<IHomeScreenProps> = ({ navigation }) => {
               </Typography>
             </Box>
 
-            <Typography variant="bold" color="primary">
+            <Typography
+              variant="bold"
+              color="primary"
+              onPress={() =>
+                navigation.push("SeeMoreAnimesScreen", {
+                  title: "Upcoming",
+                })
+              }
+            >
               See More
             </Typography>
           </Box>
@@ -111,7 +119,15 @@ const HomeScreen: FC<IHomeScreenProps> = ({ navigation }) => {
               </Typography>
             </Box>
 
-            <Typography variant="bold" color="primary">
+            <Typography
+              variant="bold"
+              color="primary"
+              onPress={() =>
+                navigation.push("SeeMoreAnimesScreen", {
+                  title: "Popular",
+                })
+              }
+            >
               See More
             </Typography>
           </Box>

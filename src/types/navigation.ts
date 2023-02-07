@@ -8,4 +8,5 @@ export type AppStackParams = {
   AppTabs: undefined;
   SettingsScreen: undefined;
   AnimeDetailsScreen: { id: number };
+  SeeMoreAnimesScreen: { title: string };
 };

@@ -24,7 +24,8 @@ const GenreGrid: FC<IGenreGridProps> = ({ genres }) => {
       keyExtractor={(item, index) => index.toString()}
       snapToAlignment="start"
       decelerationRate={"fast"}
-      snapToInterval={300}
+      //this is hardcoded based on the known value of genres.lenght. need to make it dynamic
+      snapToInterval={365}
       renderItem={({ item, index }) => (
         <View
           style={[
@@ -58,7 +59,7 @@ export default GenreGrid;
 
 const styles = StyleSheet.create({
   genreChipWrapper: {
-    width: 300,
+    width: 350,
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",

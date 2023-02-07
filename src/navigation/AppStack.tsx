@@ -9,6 +9,7 @@ import { AppStackParams } from "../types/navigation";
 import { getBlurScheme } from "../utils/theme";
 import { useColorScheme } from "react-native";
 import { SettingsContext } from "../context/SettingsContext";
+import { SeeMoreAnimesScreen } from "../screens/SeeMoreAnimesScreen";
 
 const Stack = createNativeStackNavigator<AppStackParams>();
 
@@ -38,6 +39,14 @@ export const AppStack = () => {
         name="SettingsScreen"
         component={SettingsScreen}
         options={{ title: "Settings" }}
+      />
+
+      <Stack.Screen
+        name="SeeMoreAnimesScreen"
+        component={SeeMoreAnimesScreen}
+        options={({ route }) => ({
+          headerTitle: route.params.title,
+        })}
       />
     </Stack.Navigator>
   );

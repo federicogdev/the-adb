@@ -1,21 +1,20 @@
 import React, { FC } from "react";
-import {
-  FlatList,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { useTheme } from "@react-navigation/native";
+import { FlatList, StyleSheet, Text, Pressable, View } from "react-native";
+import { useNavigation, useTheme } from "@react-navigation/native";
 import { Genre } from "../../data/genres";
 import { Typography } from "../Typography";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { AppStackParams } from "../../types/navigation";
 
 interface IGenreGridProps {
   genres: Genre[][];
 }
 
+type INavigationProps = NativeStackNavigationProp<AppStackParams>;
+
 const GenreGrid: FC<IGenreGridProps> = ({ genres }) => {
   const { colors } = useTheme();
+  const navigation = useNavigation<INavigationProps>();
   return (
     <FlatList
       showsHorizontalScrollIndicator={false}
@@ -34,7 +33,7 @@ const GenreGrid: FC<IGenreGridProps> = ({ genres }) => {
           ]}
         >
           {item.map((el, i) => (
-            <TouchableOpacity
+            <Pressable
               key={i}
               style={[
                 styles.genreChip,
@@ -43,11 +42,17 @@ const GenreGrid: FC<IGenreGridProps> = ({ genres }) => {
                   width: i === 0 ? "100%" : "48%",
                 },
               ]}
+              onPress={() =>
+                navigation.push("AnimesByGenresScreen", {
+                  id: el.mal_id,
+                  genre: el.name,
+                })
+              }
             >
               <Typography variant="bold" numberOfLines={1} adjustsFontSizeToFit>
                 {el.name}
               </Typography>
-            </TouchableOpacity>
+            </Pressable>
           ))}
         </View>
       )}

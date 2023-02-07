@@ -4,7 +4,7 @@ import {
   Pressable,
   StyleSheet,
 } from "react-native";
-import React from "react";
+import React, { FC } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchGenres } from "../../utils/api";
 import { SafeArea } from "../../components/SafeArea";
@@ -13,9 +13,13 @@ import { useTheme } from "@react-navigation/native";
 import { Typography } from "../../components/Typography";
 import { Ionicons } from "@expo/vector-icons";
 import { Spacer } from "../../components/Spacer";
-interface Props {}
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { AppStackParams } from "../../types/navigation";
+interface IGenresScreenProps {
+  navigation: NativeStackNavigationProp<AppStackParams, "GenresScreen">;
+}
 
-const GenresScreen = (props: Props) => {
+const GenresScreen: FC<IGenresScreenProps> = ({ navigation }) => {
   const { colors } = useTheme();
   const genres = useQuery(["genres"], fetchGenres);
 
@@ -37,6 +41,12 @@ const GenresScreen = (props: Props) => {
         renderItem={({ item }) => (
           <Pressable
             style={[styles.genresTile, { backgroundColor: colors.card }]}
+            onPress={() =>
+              navigation.push("AnimesByGenresScreen", {
+                id: item.mal_id,
+                genre: item.name,
+              })
+            }
           >
             <Box flexDirection="column">
               <Typography variant="bold">{item.name}</Typography>

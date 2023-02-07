@@ -11,6 +11,7 @@ import { useColorScheme } from "react-native";
 import { SettingsContext } from "../context/SettingsContext";
 import { SeeMoreAnimesScreen } from "../screens/SeeMoreAnimesScreen";
 import { GenresScreen } from "../screens/GenresScreen";
+import { AnimesByGenresScreen } from "../screens/AnimesByGenresScreen";
 
 const Stack = createNativeStackNavigator<AppStackParams>();
 
@@ -53,6 +54,13 @@ export const AppStack = () => {
         component={SeeMoreAnimesScreen}
         options={({ route }) => ({
           headerTitle: route.params.title,
+        })}
+      />
+      <Stack.Screen
+        name="AnimesByGenresScreen"
+        component={AnimesByGenresScreen}
+        options={({ route }) => ({
+          headerTitle: route.params.genre,
         })}
       />
     </Stack.Navigator>

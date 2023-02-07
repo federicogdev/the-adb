@@ -21,6 +21,8 @@ import { SafeArea } from "../../components/SafeArea";
 import { AnimeCover } from "../../components/AnimeCover";
 import { Spacer } from "../../components/Spacer";
 import { Typography } from "../../components/Typography";
+import { genres } from "../../data/genres";
+import { GenreGrid } from "../../components/GenreGrid";
 
 interface IHomeScreenProps {
   navigation: NativeStackNavigationProp<AppStackParams, "AppTabs">;
@@ -132,6 +134,18 @@ const HomeScreen: FC<IHomeScreenProps> = ({ navigation }) => {
               </TouchableOpacity>
             ))}
           </View>
+        </Box>
+
+        <Box flexDirection="column" mBottom={20}>
+          <Box mBottom={20} justify="space-between" align="center" pX={15}>
+            <Typography variant="bold" size={22}>
+              Genres
+            </Typography>
+            <Typography variant="bold" color="primary">
+              See More
+            </Typography>
+          </Box>
+          <GenreGrid genres={genres} />
         </Box>
       </ScrollView>
     </SafeArea>

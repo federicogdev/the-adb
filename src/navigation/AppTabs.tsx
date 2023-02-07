@@ -28,7 +28,7 @@ const HomeScreenStack = () => {
     <HomeStack.Navigator
       screenOptions={{
         headerTransparent: true,
-        headerLargeTitle: true,
+        // headerLargeTitle: true,
         headerBlurEffect: getBlurScheme(theme, scheme),
         headerLargeStyle: {
           backgroundColor: colors.background,

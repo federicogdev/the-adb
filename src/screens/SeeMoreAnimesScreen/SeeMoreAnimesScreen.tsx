@@ -4,7 +4,6 @@ import {
   FlatList,
   StyleSheet,
   Pressable,
-  View,
   Animated,
 } from "react-native";
 import React, { FC } from "react";
@@ -39,7 +38,7 @@ const SeeMoreAnimesScreen: FC<ISeeMoreAnimeScreenProps> = ({
         return res.data;
       });
 
-  const animes = useInfiniteQuery(["moreAnimesList", title], fetchAnimes, {
+  const animes = useInfiniteQuery(["seeMoreAnimes", title], fetchAnimes, {
     getNextPageParam: (_, page) => {
       return page.length + 1;
     },

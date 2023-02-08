@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Pressable,
   Animated,
+  View,
 } from "react-native";
 import React, { FC } from "react";
 import axios from "axios";
@@ -66,7 +67,7 @@ const SeeMoreAnimesScreen: FC<ISeeMoreAnimeScreenProps> = ({
         keyExtractor={(item) => item.mal_id.toString()}
         data={animes.data?.pages.map((page) => page.data).flat()}
         renderItem={({ item }) => (
-          <Animated.View>
+          <View>
             <Pressable
               key={item.mal_id}
               onPress={() =>
@@ -82,7 +83,7 @@ const SeeMoreAnimesScreen: FC<ISeeMoreAnimeScreenProps> = ({
                 multiline={false}
               />
             </Pressable>
-          </Animated.View>
+          </View>
         )}
         onEndReached={loadMore}
         onEndReachedThreshold={0.2}

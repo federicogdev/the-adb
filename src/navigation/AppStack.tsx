@@ -35,6 +35,7 @@ export const AppStack = () => {
         component={AppTabs}
         options={{ headerShown: false }}
       />
+
       <Stack.Screen
         name="AnimeDetailsScreen"
         component={AnimeDetailsScreen}

@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useLayoutEffect } from "react";
 import {
   ActivityIndicator,
   Dimensions,
@@ -11,6 +11,7 @@ import {
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useQuery } from "@tanstack/react-query";
 import { useTheme } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
 
 import { TopAnimeFilter } from "../../models";
 import { AppStackParams } from "../../types/navigation";
@@ -29,6 +30,19 @@ interface IHomeScreenProps {
 
 const HomeScreen: FC<IHomeScreenProps> = ({ navigation }) => {
   const { colors } = useTheme();
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <Ionicons
+          name="md-settings"
+          size={22}
+          color={colors.primary}
+          onPress={() => navigation.push("SettingsScreen")}
+        />
+      ),
+    });
+  }, [navigation]);
 
   const upcomingAnimes = useQuery(["upcomingAnimes"], () =>
     fetchAnimes(TopAnimeFilter.upcoming, 30)

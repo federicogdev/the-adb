@@ -15,7 +15,6 @@ type SettingsContextState = {
 
 const contextDefaultValue: SettingsContextState = {
   theme: "automatic",
-
   selectTheme: () => {},
 };
 
@@ -36,7 +35,7 @@ export const SettingsContextProvider: FC<ISettingsContextProviderProps> = ({
   const saveTheme = async (value: Themes) => {
     try {
       const jsonValue = JSON.stringify(value);
-      await AsyncStorage.setItem("@zettai/theme", jsonValue);
+      await AsyncStorage.setItem("@theadb/theme", jsonValue);
     } catch (error) {
       console.log(error);
     }
@@ -44,7 +43,7 @@ export const SettingsContextProvider: FC<ISettingsContextProviderProps> = ({
 
   const loadTheme = async () => {
     try {
-      const value = await AsyncStorage.getItem("@zettai/theme");
+      const value = await AsyncStorage.getItem("@theadb/theme");
       if (value !== null) {
         setTheme(JSON.parse(value));
       }

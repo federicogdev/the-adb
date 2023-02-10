@@ -13,11 +13,12 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useQuery } from "@tanstack/react-query";
 import { AppStackParams } from "../../types/navigation";
 
-import { searchAnimes } from "../../utils/api";
+import { fetchAnimes, searchAnimes } from "../../utils/api";
 import { SafeArea } from "../../components/SafeArea";
 import { Box } from "../../components/Box";
 import { AnimeCover } from "../../components/AnimeCover";
 import { Typography } from "../../components/Typography";
+import { TopAnimeFilter } from "../../models";
 
 interface ISearchScreenProps {
   navigation: NativeStackNavigationProp<AppStackParams, "AppTabs">;
@@ -47,7 +48,11 @@ const SearchScreen: FC<ISearchScreenProps> = ({ navigation }) => {
 
   const onClick = () => searchedAnimes.refetch();
 
-  if (searchedAnimes.isRefetching)
+  const popularAnimes = useQuery(["popularAnimes"], () =>
+    fetchAnimes(TopAnimeFilter.bypopularity, 6)
+  );
+
+  if (searchedAnimes.isRefetching && popularAnimes.isLoading)
     return (
       <SafeArea>
         <Box flex justify="center" align="center">
@@ -86,15 +91,33 @@ const SearchScreen: FC<ISearchScreenProps> = ({ navigation }) => {
           )}
         />
       ) : (
-        <ScrollView contentContainerStyle={{ flex: 1 }}>
-          <Box flex justify="center" align="center">
-            <Typography
-              onPress={() => {
-                setSearchTerm("One P");
-              }}
-            >
-              Hello
+        <ScrollView>
+          <Box>
+            <Typography>Past searches</Typography>
+          </Box>
+          <Box flexDirection="column" pX={15}>
+            <Typography size={22} variant="bold">
+              Popular
             </Typography>
+            <>
+              {popularAnimes.data?.data.map((item, key) => (
+                <Pressable
+                  key={item.mal_id}
+                  onPress={() =>
+                    navigation.push("AnimeDetailsScreen", {
+                      id: item.mal_id,
+                    })
+                  }
+                  style={[{ paddingHorizontal: 5, paddingVertical: 5 }]}
+                >
+                  <AnimeCover
+                    anime={item}
+                    width={(Dimensions.get("screen").width - 50) / 3}
+                    multiline={false}
+                  />
+                </Pressable>
+              ))}
+            </>
           </Box>
         </ScrollView>
       )}

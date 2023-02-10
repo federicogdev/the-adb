@@ -48,13 +48,13 @@ const HomeScreen: FC<IHomeScreenProps> = ({ navigation }) => {
     fetchAnimes(TopAnimeFilter.upcoming, 30)
   );
 
-  const topAnimes = useQuery(
-    ["topAnimes"],
-    () => fetchAnimes(TopAnimeFilter.bypopularity, 6),
+  const favoritesAnimes = useQuery(
+    ["favoritesAnimes"],
+    () => fetchAnimes(TopAnimeFilter.airing, 6),
     { enabled: upcomingAnimes.isSuccess }
   );
 
-  if (upcomingAnimes.isLoading && topAnimes.isLoading) {
+  if (upcomingAnimes.isLoading && favoritesAnimes.isLoading) {
     return (
       <SafeArea>
         <Box justify="center" align="center" flex>
@@ -122,7 +122,7 @@ const HomeScreen: FC<IHomeScreenProps> = ({ navigation }) => {
           <Box pX={15} mBottom={10} justify="space-between" align="center">
             <Box flexDirection="column">
               <Typography variant="bold" size={22}>
-                Popular
+                Favorites
               </Typography>
 
               <Typography color="subtext" size={15}>
@@ -135,7 +135,7 @@ const HomeScreen: FC<IHomeScreenProps> = ({ navigation }) => {
               color="primary"
               onPress={() =>
                 navigation.push("SeeMoreAnimesScreen", {
-                  title: "Popular",
+                  title: "Favorite",
                 })
               }
             >
@@ -143,7 +143,7 @@ const HomeScreen: FC<IHomeScreenProps> = ({ navigation }) => {
             </Typography>
           </Box>
           <View style={styles.grid}>
-            {topAnimes.data?.data.map((item) => (
+            {favoritesAnimes.data?.data.map((item) => (
               <Pressable
                 key={item.mal_id}
                 onPress={() =>

@@ -1,12 +1,10 @@
 import React, { FC } from "react";
 import {
   ActivityIndicator,
-  Animated,
   Dimensions,
   FlatList,
   Pressable,
   StyleSheet,
-  Text,
   View,
 } from "react-native";
 import { RouteProp, useTheme } from "@react-navigation/native";
@@ -69,7 +67,7 @@ const AnimesByGenresScreen: FC<IAnimesByGenresScreenProps> = ({
         keyExtractor={(item) => item.mal_id.toString()}
         data={animes.data?.pages.map((page) => page.data).flat()}
         renderItem={({ item }) => (
-          <Animated.View>
+          <View>
             <Pressable
               key={item.mal_id}
               onPress={() =>
@@ -85,7 +83,7 @@ const AnimesByGenresScreen: FC<IAnimesByGenresScreenProps> = ({
                 multiline={false}
               />
             </Pressable>
-          </Animated.View>
+          </View>
         )}
         onEndReached={loadMore}
         onEndReachedThreshold={0.2}

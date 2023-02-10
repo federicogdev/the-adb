@@ -7,14 +7,14 @@ interface ISearchContextProviderProps {
 
 interface ISearchItem {
   id: number;
-  title: number;
+  title: string;
 }
 
 interface ISearchContextState {
   searchHistory: ISearchItem[];
   removeFromSearchHistory: (item: ISearchItem) => void;
   addToSearchHistory: (item: ISearchItem) => void;
-  clearHistory: (item: ISearchItem) => void;
+  clearHistory: () => void;
 }
 
 const contextDefaultValue: ISearchContextState = {

@@ -1,4 +1,4 @@
-import React, { FC, useLayoutEffect, useState } from "react";
+import React, { FC, useContext, useLayoutEffect, useState } from "react";
 import {
   ActivityIndicator,
   Dimensions,
@@ -12,6 +12,7 @@ import { useTheme } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useQuery } from "@tanstack/react-query";
 import { AppStackParams } from "../../types/navigation";
+import { Ionicons } from "@expo/vector-icons";
 
 import { fetchAnimes, searchAnimes } from "../../utils/api";
 import { SafeArea } from "../../components/SafeArea";
@@ -20,6 +21,8 @@ import { AnimeCover } from "../../components/AnimeCover";
 import { Typography } from "../../components/Typography";
 import { TopAnimeFilter } from "../../models";
 import { AnimeHorizontal } from "../../components/AnimeHorizontal";
+import { SearchContext } from "../../context/SearchContext";
+import { Spacer } from "../../components/Spacer";
 
 interface ISearchScreenProps {
   navigation: NativeStackNavigationProp<AppStackParams, "AppTabs">;
@@ -28,6 +31,12 @@ interface ISearchScreenProps {
 const SearchScreen: FC<ISearchScreenProps> = ({ navigation }) => {
   const { colors } = useTheme();
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const {
+    searchHistory,
+    addToSearchHistory,
+    removeFromSearchHistory,
+    clearHistory,
+  } = useContext(SearchContext);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -50,7 +59,7 @@ const SearchScreen: FC<ISearchScreenProps> = ({ navigation }) => {
   const onClick = () => searchedAnimes.refetch();
 
   const popularAnimes = useQuery(["popularAnimes"], () =>
-    fetchAnimes(TopAnimeFilter.bypopularity, 6)
+    fetchAnimes(TopAnimeFilter.bypopularity, 12)
   );
 
   if (searchedAnimes.isRefetching && popularAnimes.isLoading)
@@ -75,11 +84,16 @@ const SearchScreen: FC<ISearchScreenProps> = ({ navigation }) => {
             <View>
               <Pressable
                 key={item.mal_id}
-                onPress={() =>
+                onPress={() => {
                   navigation.push("AnimeDetailsScreen", {
                     id: item.mal_id,
-                  })
-                }
+                  });
+
+                  addToSearchHistory({
+                    id: item.mal_id,
+                    title: item.title,
+                  });
+                }}
                 style={[{ paddingHorizontal: 5, paddingVertical: 5 }]}
               >
                 <AnimeCover
@@ -93,9 +107,44 @@ const SearchScreen: FC<ISearchScreenProps> = ({ navigation }) => {
         />
       ) : (
         <ScrollView>
-          <Box>
-            <Typography>Past searches</Typography>
-          </Box>
+          {searchHistory.length > 0 && (
+            <Box flexDirection="column" pX={15} mBottom={20}>
+              <Box justify="space-between" mBottom={10}>
+                <Typography size={22} variant="bold">
+                  Past searches
+                </Typography>
+                <Typography color="primary" onPress={() => clearHistory()}>
+                  Clear
+                </Typography>
+              </Box>
+              <View style={styles.searchHistoryWrapper}>
+                {searchHistory.map((el, index) => (
+                  <Pressable
+                    style={[
+                      styles.searchHistoryChip,
+                      { backgroundColor: colors.card },
+                    ]}
+                    key={index}
+                    onPress={() =>
+                      navigation.navigate("AnimeDetailsScreen", { id: el.id })
+                    }
+                  >
+                    <Typography>{el.title}</Typography>
+                    <Spacer x={5} />
+                    <Ionicons
+                      name="close"
+                      color={colors.primary}
+                      size={18}
+                      onPress={() =>
+                        removeFromSearchHistory({ id: el.id, title: el.title })
+                      }
+                    />
+                  </Pressable>
+                ))}
+              </View>
+            </Box>
+          )}
+
           <Box flexDirection="column" pX={15}>
             <Typography size={22} variant="bold">
               Popular
@@ -126,4 +175,17 @@ export default SearchScreen;
 
 const styles = StyleSheet.create({
   flatlistWrapper: { paddingHorizontal: 10 },
+  searchHistoryWrapper: {
+    flexDirection: "row",
+    flexWrap: "nowrap",
+  },
+  searchHistoryChip: {
+    padding: 7.5,
+    borderRadius: 5,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 7.5,
+    marginRight: 5,
+  },
 });

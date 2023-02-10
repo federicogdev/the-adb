@@ -26,7 +26,7 @@ const AnimeHorizontal: FC<IAnimeHorizontalProps> = ({ anime }) => {
           {anime.title}
         </Typography>
         <Spacer y={5} />
-        <Typography numberOfLines={4} size={14} style={{ flexWrap: "nowrap" }}>
+        <Typography numberOfLines={5} size={14} style={{ flexWrap: "nowrap" }}>
           {anime.synopsis}
         </Typography>
         <Spacer y={5} />

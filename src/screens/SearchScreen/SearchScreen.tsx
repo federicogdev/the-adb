@@ -19,6 +19,7 @@ import { Box } from "../../components/Box";
 import { AnimeCover } from "../../components/AnimeCover";
 import { Typography } from "../../components/Typography";
 import { TopAnimeFilter } from "../../models";
+import { AnimeHorizontal } from "../../components/AnimeHorizontal";
 
 interface ISearchScreenProps {
   navigation: NativeStackNavigationProp<AppStackParams, "AppTabs">;
@@ -110,11 +111,7 @@ const SearchScreen: FC<ISearchScreenProps> = ({ navigation }) => {
                   }
                   style={[{ paddingHorizontal: 5, paddingVertical: 5 }]}
                 >
-                  <AnimeCover
-                    anime={item}
-                    width={(Dimensions.get("screen").width - 50) / 3}
-                    multiline={false}
-                  />
+                  <AnimeHorizontal anime={item} />
                 </Pressable>
               ))}
             </>

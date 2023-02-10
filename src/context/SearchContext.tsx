@@ -36,7 +36,7 @@ export const SearchContextProvider: FC<ISearchContextProviderProps> = ({
 
   const addToSearchHistory = (item: ISearchItem) => {
     if (searchHistory.some((e) => e.id === item.id)) {
-      searchHistory.splice(searchHistory.indexOf(item), 1);
+      searchHistory.splice(searchHistory.findIndex((x) => x.id === item.id));
     }
 
     setSearchHistory([item, ...searchHistory]);

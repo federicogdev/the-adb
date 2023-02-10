@@ -28,6 +28,7 @@ export const AppStack = () => {
         headerLargeStyle: {
           backgroundColor: colors.background,
         },
+        headerBackTitle: "Back",
       }}
     >
       <Stack.Screen

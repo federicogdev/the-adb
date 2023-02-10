@@ -129,16 +129,22 @@ const SearchScreen: FC<ISearchScreenProps> = ({ navigation }) => {
                       navigation.navigate("AnimeDetailsScreen", { id: el.id })
                     }
                   >
-                    <Typography>{el.title}</Typography>
-                    <Spacer x={5} />
+                    {/* <View style={styles.chipLeft}> */}
+                    <Typography numberOfLines={1}>{el.title}</Typography>
+                    {/* </View> */}
+                    {/* <View style={styles.chipRight}> */}
                     <Ionicons
                       name="close"
                       color={colors.primary}
                       size={18}
                       onPress={() =>
-                        removeFromSearchHistory({ id: el.id, title: el.title })
+                        removeFromSearchHistory({
+                          id: el.id,
+                          title: el.title,
+                        })
                       }
                     />
+                    {/* </View> */}
                   </Pressable>
                 ))}
               </View>
@@ -149,7 +155,7 @@ const SearchScreen: FC<ISearchScreenProps> = ({ navigation }) => {
             <Typography size={22} variant="bold">
               Popular
             </Typography>
-            <>
+            <Box flexDirection="column" mTop={10}>
               {popularAnimes.data?.data.map((item, key) => (
                 <Pressable
                   key={item.mal_id}
@@ -163,7 +169,7 @@ const SearchScreen: FC<ISearchScreenProps> = ({ navigation }) => {
                   <AnimeHorizontal anime={item} />
                 </Pressable>
               ))}
-            </>
+            </Box>
           </Box>
         </ScrollView>
       )}
@@ -177,7 +183,8 @@ const styles = StyleSheet.create({
   flatlistWrapper: { paddingHorizontal: 10 },
   searchHistoryWrapper: {
     flexDirection: "row",
-    flexWrap: "nowrap",
+    flexWrap: "wrap",
+    justifyContent: "flex-start",
   },
   searchHistoryChip: {
     padding: 7.5,
@@ -187,5 +194,11 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginBottom: 7.5,
     marginRight: 5,
+    // width: 200,
+    maxWidth: 150,
   },
+  chipLeft: {
+    flex: 4.6 / 5,
+  },
+  chipRight: { flex: 0.4 / 5 },
 });

@@ -14,12 +14,12 @@ import { Ionicons } from "@expo/vector-icons";
 import { AppStackParams } from "../../types/navigation";
 import { SafeArea } from "../../components/SafeArea";
 import { useQuery } from "@tanstack/react-query";
-import { fetchAnimeDetails, fetchAnimeStatistics } from "../../utils/api";
+import { fetchAnimeDetails } from "../../utils/api";
 import { Box } from "../../components/Box";
 import { Typography } from "../../components/Typography";
 import { Spacer } from "../../components/Spacer";
 import { shortenNumber } from "../../utils/number";
-import { ScoresBarChart } from "../../components/ScoresBarChart";
+import dayjs from "dayjs";
 
 interface IAnimeDetailsScreenProps {
   navigation: NativeStackNavigationProp<AppStackParams, "AnimeDetailsScreen">;
@@ -35,26 +35,21 @@ const AnimeDetailsScreen: FC<IAnimeDetailsScreenProps> = ({
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <Ionicons
-          name="md-bookmark-outline"
-          size={22}
-          color={colors.primary}
-          onPress={() => navigation.push("SettingsScreen")}
-        />
+        <Box>
+          <Ionicons
+            name="md-bookmark-outline"
+            size={22}
+            color={colors.primary}
+          />
+          <Spacer x={5} />
+          <Ionicons name="md-add" size={22} color={colors.primary} />
+        </Box>
       ),
     });
   }, [navigation]);
 
   const animeDetails = useQuery(["animeDetails", id], () =>
     fetchAnimeDetails(id)
-  );
-
-  const animeStatistics = useQuery(
-    ["animeStatistics", id],
-    () => fetchAnimeStatistics(id),
-    {
-      enabled: animeDetails.isSuccess,
-    }
   );
 
   if (animeDetails.isLoading && animeDetails.isLoading) {
@@ -149,6 +144,33 @@ const AnimeDetailsScreen: FC<IAnimeDetailsScreenProps> = ({
           <Typography>{animeDetails.data?.data.synopsis}</Typography>
         </Box>
 
+        {/* STATUS */}
+        <Box mTop={20} pX={15} flexDirection="column">
+          <Box mBottom={10}>
+            <Typography variant="bold" size={13} color="subtext">
+              STATUS
+            </Typography>
+          </Box>
+          <Typography>{animeDetails.data?.data.status} </Typography>
+        </Box>
+        {/* AIRING DATE */}
+        <Box mTop={20} pX={15} flexDirection="column">
+          <Box mBottom={10}>
+            <Typography variant="bold" size={13} color="subtext">
+              AIRED
+            </Typography>
+          </Box>
+          <Typography>
+            {animeDetails.data?.data.aired.from
+              ? dayjs(animeDetails.data?.data.aired.from).format("MMMM D, YYYY")
+              : "?"}{" "}
+            to{" "}
+            {animeDetails.data?.data.aired.to
+              ? dayjs(animeDetails.data?.data.aired.to).format("MMMM D, YYYY")
+              : "?"}
+          </Typography>
+        </Box>
+
         {/* GENRES */}
         <Box mTop={20} pX={15} flexDirection="column">
           <Box mBottom={10}>
@@ -178,37 +200,74 @@ const AnimeDetailsScreen: FC<IAnimeDetailsScreenProps> = ({
                     });
                   }}
                 >
-                  <Typography size={14}>{el.name}</Typography>
+                  <Typography>{el.name}</Typography>
                 </Pressable>
               </Box>
             ))}
           </View>
         </Box>
 
-        {/* STATISTICS */}
-        {/* {animeStatistics.data?.data.scores &&
-          animeStatistics.data?.data.scores.length > 0 && (
-            <Box mTop={20} flexDirection="column">
-              <Box mBottom={30} pX={15} justify="space-between" align="center">
+        {/* PRODUCERS */}
+        {animeDetails.data?.data.producers &&
+          animeDetails.data?.data.producers.length > 0 && (
+            <Box mTop={20} pX={15} flexDirection="column">
+              <Box mBottom={10}>
                 <Typography variant="bold" size={13} color="subtext">
-                  SCORES
-                </Typography>
-
-                <Typography
-                  size={13}
-                  color="primary"
-                  onPress={
-                    () => {}
-                    // navigation.push("AnimeReviewsScreen", { animeId: animeId })
-                  }
-                >
-                  See Reviews
+                  PRODUCERS
                 </Typography>
               </Box>
-
-              <ScoresBarChart scores={animeStatistics.data?.data.scores} />
+              <View style={styles.chipContainer}>
+                {animeDetails.data?.data.producers.map((el, i) => (
+                  <Box
+                    key={i}
+                    style={[
+                      styles.chip,
+                      { backgroundColor: colors.card, marginBottom: 5 },
+                    ]}
+                    mRight={5}
+                    pX={7.5}
+                    pY={5}
+                    mBottom={7.5}
+                  >
+                    <Pressable>
+                      <Typography>{el.name}</Typography>
+                    </Pressable>
+                  </Box>
+                ))}
+              </View>
             </Box>
-          )} */}
+          )}
+
+        {/* LICENSORS */}
+        {animeDetails.data?.data.licensors &&
+          animeDetails.data?.data.licensors.length > 0 && (
+            <Box mTop={20} pX={15} flexDirection="column">
+              <Box mBottom={10}>
+                <Typography variant="bold" size={13} color="subtext">
+                  LICENSORS
+                </Typography>
+              </Box>
+              <View style={styles.chipContainer}>
+                {animeDetails.data?.data.licensors.map((el, i) => (
+                  <Box
+                    key={i}
+                    style={[
+                      styles.chip,
+                      { backgroundColor: colors.card, marginBottom: 5 },
+                    ]}
+                    mRight={5}
+                    pX={7.5}
+                    pY={5}
+                    mBottom={7.5}
+                  >
+                    <Pressable>
+                      <Typography>{el.name}</Typography>
+                    </Pressable>
+                  </Box>
+                ))}
+              </View>
+            </Box>
+          )}
       </ScrollView>
     </SafeArea>
   );
@@ -224,7 +283,18 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   title: { textAlign: "center" },
-  chip: { borderRadius: 5 },
+  chip: {
+    borderRadius: 5,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 1.0,
+
+    elevation: 1,
+  },
   chipContainer: {
     flexDirection: "row",
     flexWrap: "wrap",

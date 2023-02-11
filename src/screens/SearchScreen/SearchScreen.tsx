@@ -23,6 +23,7 @@ import { TopAnimeFilter } from "../../models";
 import { AnimeHorizontal } from "../../components/AnimeHorizontal";
 import { SearchContext } from "../../context/SearchContext";
 import { Spacer } from "../../components/Spacer";
+import { Chip } from "../../components/Chip";
 
 interface ISearchScreenProps {
   navigation: NativeStackNavigationProp<AppStackParams, "AppTabs">;
@@ -91,7 +92,10 @@ const SearchScreen: FC<ISearchScreenProps> = ({ navigation }) => {
 
                   addToSearchHistory({
                     id: item.mal_id,
-                    title: item.title,
+                    title:
+                      item.title.length > 15
+                        ? item.title.slice(0, 15)
+                        : item.title,
                   });
                 }}
                 style={[{ paddingHorizontal: 5, paddingVertical: 5 }]}
@@ -119,33 +123,34 @@ const SearchScreen: FC<ISearchScreenProps> = ({ navigation }) => {
               </Box>
               <View style={styles.searchHistoryWrapper}>
                 {searchHistory.map((el, index) => (
-                  <Pressable
-                    style={[
-                      styles.searchHistoryChip,
-                      { backgroundColor: colors.card },
-                    ]}
-                    key={index}
-                    onPress={() =>
-                      navigation.navigate("AnimeDetailsScreen", { id: el.id })
-                    }
-                  >
-                    {/* <View style={styles.chipLeft}> */}
-                    <Typography numberOfLines={1}>{el.title}</Typography>
-                    {/* </View> */}
-                    {/* <View style={styles.chipRight}> */}
-                    <Ionicons
-                      name="close"
-                      color={colors.primary}
-                      size={18}
+                  <Chip>
+                    <Pressable
+                      style={[
+                        styles.searchHistoryChip,
+                        { backgroundColor: colors.card },
+                      ]}
+                      key={index}
                       onPress={() =>
-                        removeFromSearchHistory({
-                          id: el.id,
-                          title: el.title,
-                        })
+                        navigation.navigate("AnimeDetailsScreen", { id: el.id })
                       }
-                    />
-                    {/* </View> */}
-                  </Pressable>
+                    >
+                      <Typography numberOfLines={1}>{el.title}</Typography>
+                      <Pressable
+                        onPress={() =>
+                          removeFromSearchHistory({
+                            id: el.id,
+                            title: el.title,
+                          })
+                        }
+                      >
+                        <Ionicons
+                          name="close"
+                          color={colors.primary}
+                          size={18}
+                        />
+                      </Pressable>
+                    </Pressable>
+                  </Chip>
                 ))}
               </View>
             </Box>
@@ -190,15 +195,14 @@ const styles = StyleSheet.create({
     padding: 7.5,
     borderRadius: 5,
     flexDirection: "row",
+    display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
     marginBottom: 7.5,
     marginRight: 5,
-    // width: 200,
-    maxWidth: 150,
   },
   chipLeft: {
-    flex: 4.6 / 5,
+    flex: 4 / 5,
   },
   chipRight: { flex: 0.4 / 5 },
 });

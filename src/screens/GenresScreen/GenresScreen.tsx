@@ -15,6 +15,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Spacer } from "../../components/Spacer";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { AppStackParams } from "../../types/navigation";
+import { Chip } from "../../components/Chip";
 interface IGenresScreenProps {
   navigation: NativeStackNavigationProp<AppStackParams, "GenresScreen">;
 }
@@ -39,25 +40,31 @@ const GenresScreen: FC<IGenresScreenProps> = ({ navigation }) => {
         contentContainerStyle={styles.flatlist}
         data={genres.data?.data}
         renderItem={({ item }) => (
-          <Pressable
-            style={[styles.genresTile, { backgroundColor: colors.card }]}
-            onPress={() =>
-              navigation.push("AnimesByGenresScreen", {
-                id: item.mal_id,
-                genre: item.name,
-              })
-            }
-          >
-            <Box flexDirection="column">
-              <Typography variant="bold">{item.name}</Typography>
+          <Chip>
+            <Pressable
+              style={[styles.genresTile, { backgroundColor: colors.card }]}
+              onPress={() =>
+                navigation.push("AnimesByGenresScreen", {
+                  id: item.mal_id,
+                  genre: item.name,
+                })
+              }
+            >
+              <Box flexDirection="column">
+                <Typography variant="bold">{item.name}</Typography>
 
-              <Spacer y={3} />
-              <Typography color="subtext" size={14}>
-                {item.count} titles
-              </Typography>
-            </Box>
-            <Ionicons name="chevron-forward" color={colors.primary} size={20} />
-          </Pressable>
+                <Spacer y={3} />
+                <Typography color="subtext" size={14}>
+                  {item.count} titles
+                </Typography>
+              </Box>
+              <Ionicons
+                name="chevron-forward"
+                color={colors.primary}
+                size={20}
+              />
+            </Pressable>
+          </Chip>
         )}
       />
     </SafeArea>

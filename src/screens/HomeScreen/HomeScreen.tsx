@@ -67,7 +67,7 @@ const HomeScreen: FC<IHomeScreenProps> = ({ navigation }) => {
   return (
     <SafeArea>
       <ScrollView>
-        <Box flexDirection="column" mBottom={20}>
+        <Box flexDirection="column" mBottom={20} mTop={10}>
           <Box pX={15} mBottom={10} justify="space-between" align="center">
             <Box flexDirection="column">
               <Typography variant="bold" size={22}>

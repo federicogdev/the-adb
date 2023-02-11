@@ -22,7 +22,7 @@ const AnimeHorizontal: FC<IAnimeHorizontalProps> = ({ anime }) => {
       />
 
       <Box flexDirection="column" flex pX={10}>
-        <Typography size={18} variant="bold">
+        <Typography size={16} variant="bold">
           {anime.title}
         </Typography>
         <Spacer y={5} />

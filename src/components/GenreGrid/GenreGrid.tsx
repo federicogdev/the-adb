@@ -25,7 +25,7 @@ const GenreGrid: FC<IGenreGridProps> = ({ genres }) => {
       snapToAlignment="start"
       decelerationRate={"fast"}
       //this is hardcoded based on the known value of genres.lenght. need to make it dynamic
-      snapToInterval={365}
+      snapToInterval={340}
       renderItem={({ item, index }) => (
         <View
           style={[
@@ -36,9 +36,9 @@ const GenreGrid: FC<IGenreGridProps> = ({ genres }) => {
           {item.map((el, i) => (
             <Chip
               style={[styles.genreChip, { width: i === 0 ? "100%" : "48%" }]}
+              key={i}
             >
               <Pressable
-                key={i}
                 onPress={() =>
                   navigation.push("AnimesByGenresScreen", {
                     id: el.mal_id,
@@ -66,7 +66,7 @@ export default GenreGrid;
 
 const styles = StyleSheet.create({
   genreChipWrapper: {
-    width: 350,
+    width: 325,
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",

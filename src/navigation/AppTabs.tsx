@@ -109,20 +109,7 @@ export const AppTabs = () => {
           ),
         }}
       />
-      <Tabs.Screen
-        component={CollectionsScreenStack}
-        name="CollectionsScreen"
-        options={{
-          tabBarLabel: "Collections",
-          tabBarIcon: ({ color, focused }) => (
-            <Ionicons
-              name={focused ? "md-star" : "md-star-outline"}
-              size={20}
-              color={color}
-            />
-          ),
-        }}
-      />
+
       <Tabs.Screen
         component={SearchScreenStack}
         name="SearchScreen"
@@ -131,6 +118,21 @@ export const AppTabs = () => {
           tabBarIcon: ({ color, focused }) => (
             <Ionicons
               name={focused ? "md-search" : "md-search-outline"}
+              size={20}
+              color={color}
+            />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        component={CollectionsScreenStack}
+        name="CollectionsScreen"
+        options={{
+          tabBarLabel: "Collections",
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons
+              name={focused ? "md-star" : "md-star-outline"}
               size={20}
               color={color}
             />

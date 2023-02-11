@@ -111,41 +111,36 @@ const SearchScreen: FC<ISearchScreenProps> = ({ navigation }) => {
       ) : (
         <ScrollView contentContainerStyle={styles.scrollViewWrapper}>
           {searchHistory.length > 0 && (
-            <Box flexDirection="column" pX={15} mBottom={20}>
-              <Box justify="space-between" mBottom={10}>
+            <Box flexDirection="column" mBottom={20}>
+              <Box justify="space-between" mBottom={10} pX={15}>
                 <Typography size={22} variant="bold">
-                  Past searches
+                  Recents{" "}
                 </Typography>
                 <Typography color="primary" onPress={() => clearHistory()}>
                   Clear
                 </Typography>
               </Box>
-              <View style={styles.searchHistoryWrapper}>
-                {searchHistory.map((el, index) => (
-                  <Pressable
-                    key={index}
-                    onPress={() =>
-                      navigation.navigate("AnimeDetailsScreen", { id: el.id })
-                    }
+
+              <View>
+                {searchHistory.slice(0, 5).map((el, i) => (
+                  <View
+                    style={[
+                      styles.searchTermWrapper,
+                      i === 0 && { borderTopWidth: 0 },
+                      { borderColor: colors.separator },
+                    ]}
+                    key={i}
                   >
-                    <Chip style={[styles.searchHistoryChip]}>
-                      <Typography numberOfLines={1}>{el.title}</Typography>
-                      <Pressable
-                        onPress={() =>
-                          removeFromSearchHistory({
-                            id: el.id,
-                            title: el.title,
-                          })
-                        }
-                      >
-                        <Ionicons
-                          name="close"
-                          color={colors.primary}
-                          size={18}
-                        />
-                      </Pressable>
-                    </Chip>
-                  </Pressable>
+                    <Typography
+                      size={18}
+                      color="primary"
+                      onPress={() =>
+                        navigation.push("AnimeDetailsScreen", { id: el.id })
+                      }
+                    >
+                      {el.title}
+                    </Typography>
+                  </View>
                 ))}
               </View>
             </Box>
@@ -201,4 +196,9 @@ const styles = StyleSheet.create({
     flex: 4 / 5,
   },
   chipRight: { flex: 0.4 / 5 },
+  searchTermWrapper: {
+    borderTopWidth: 0.5,
+    marginLeft: 15,
+    paddingVertical: 7.5,
+  },
 });

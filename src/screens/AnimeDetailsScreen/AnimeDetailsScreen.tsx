@@ -1,4 +1,4 @@
-import React, { FC, useLayoutEffect } from "react";
+import React, { FC, useContext, useLayoutEffect } from "react";
 import {
   ActivityIndicator,
   ScrollView,
@@ -23,6 +23,8 @@ import { Spacer } from "../../components/Spacer";
 import { shortenNumber } from "../../utils/number";
 import dayjs from "dayjs";
 import { Chip } from "../../components/Chip";
+import { CollectionsContext } from "../../context/CollectionsContext";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface IAnimeDetailsScreenProps {
   navigation: NativeStackNavigationProp<AppStackParams, "AnimeDetailsScreen">;
@@ -34,14 +36,6 @@ const AnimeDetailsScreen: FC<IAnimeDetailsScreenProps> = ({
 }) => {
   const { colors } = useTheme();
   const { id } = route.params;
-
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <Ionicons name="md-bookmark-outline" size={22} color={colors.primary} />
-      ),
-    });
-  }, [navigation]);
 
   const animeDetails = useQuery(["animeDetails", id], () =>
     fetchAnimeDetails(id)
@@ -75,7 +69,11 @@ const AnimeDetailsScreen: FC<IAnimeDetailsScreenProps> = ({
                   { backgroundColor: colors.primary },
                 ]}
                 onPress={() =>
-                  navigation.push("AddToCollectionsScreen", { id: id })
+                  navigation.push("AddToCollectionsScreen", {
+                    id: animeDetails.data?.data.mal_id,
+                    image: animeDetails.data?.data.images.jpg.large_image_url,
+                    title: animeDetails.data?.data.title,
+                  })
                 }
               >
                 <Ionicons name="md-add-outline" size={30} color="#fff" />

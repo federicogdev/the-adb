@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
 // import { LogBox } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { CollectionsContextProvider } from "./src/context/CollectionsContext";
 import { SearchContextProvider } from "./src/context/SearchContext";
 import { SettingsContextProvider } from "./src/context/SettingsContext";
 import { Routes } from "./src/navigation/Routes";
@@ -17,7 +18,9 @@ const App = (props: Props) => {
       <QueryClientProvider client={client}>
         <SettingsContextProvider>
           <SearchContextProvider>
-            <Routes />
+            <CollectionsContextProvider>
+              <Routes />
+            </CollectionsContextProvider>
           </SearchContextProvider>
         </SettingsContextProvider>
       </QueryClientProvider>

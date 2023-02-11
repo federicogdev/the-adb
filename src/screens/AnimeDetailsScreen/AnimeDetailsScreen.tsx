@@ -70,9 +70,10 @@ const AnimeDetailsScreen: FC<IAnimeDetailsScreenProps> = ({
                 ]}
                 onPress={() =>
                   navigation.push("AddToCollectionsScreen", {
-                    id: animeDetails.data?.data.mal_id,
-                    image: animeDetails.data?.data.images.jpg.large_image_url,
-                    title: animeDetails.data?.data.title,
+                    id: animeDetails.data?.data.mal_id!,
+                    image: animeDetails.data?.data.images.jpg.large_image_url!,
+                    title: animeDetails.data?.data.title!,
+                    date: animeDetails.data?.data.aired.from!,
                   })
                 }
               >

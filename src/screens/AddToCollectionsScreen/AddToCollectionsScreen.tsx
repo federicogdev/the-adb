@@ -1,11 +1,20 @@
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
-import React, { FC } from "react";
-import { RouteProp } from "@react-navigation/native";
+import {
+  Image,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
+import React, { FC, useContext } from "react";
+import { RouteProp, useTheme } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { AppStackParams } from "../../types/navigation";
 import { Typography } from "../../components/Typography";
 import { SafeArea } from "../../components/SafeArea";
 import { Box } from "../../components/Box";
+import { CollectionsContext } from "../../context/CollectionsContext";
+import { FontAwesome } from "@expo/vector-icons";
 
 interface IAddToCollectionsScreenProps {
   navigation: NativeStackNavigationProp<
@@ -19,21 +28,11 @@ const AddToCollectionsScreen: FC<IAddToCollectionsScreenProps> = ({
   route,
   navigation,
 }) => {
-  const { id, image, title } = route.params;
+  const { id, image, title, date } = route.params;
+  const { colors } = useTheme();
+  const { isBookmarked, bookmarksHandler } = useContext(CollectionsContext);
   return (
     <SafeArea>
-      {/* <View
-        style={{ justifyContent: "center", alignItems: "center", padding: 10 }}
-      >
-        <View
-          style={{
-            backgroundColor: "#fff",
-            width: 40,
-            height: 2,
-            borderRadius: 10,
-          }}
-        />
-      </View> */}
       <ScrollView contentContainerStyle={styles.scrollViewWrapper}>
         <Box pX={15}>
           <Box flex align="center">
@@ -44,6 +43,191 @@ const AddToCollectionsScreen: FC<IAddToCollectionsScreenProps> = ({
               </Typography>
             </Box>
           </Box>
+        </Box>
+
+        <Box pX={15} mTop={30} flexDirection="column">
+          <Box mBottom={10}>
+            <Typography variant="bold" size={13} color="subtext">
+              BOOKMARKS
+            </Typography>
+          </Box>
+          <View
+            style={[
+              styles.collectionListWrapper,
+              { backgroundColor: colors.surface },
+            ]}
+          >
+            <Pressable
+              style={[
+                styles.collectionPressable,
+                { borderColor: colors.separator, borderTopWidth: 0 },
+              ]}
+              onPress={() => bookmarksHandler({ id, title, image, date })}
+            >
+              <Typography>Bookmarks</Typography>
+              <View
+                style={[
+                  styles.radioCheck,
+                  { borderColor: colors.primary },
+                  isBookmarked(id!) && {
+                    backgroundColor: colors.primary,
+                  },
+                ]}
+              >
+                <FontAwesome
+                  name="check"
+                  style={
+                    isBookmarked(id!)
+                      ? { display: "flex" }
+                      : {
+                          display: "none",
+                        }
+                  }
+                  color={"#fff"}
+                  size={12}
+                />
+              </View>
+            </Pressable>
+          </View>
+        </Box>
+
+        <Box pX={15} mTop={30} flexDirection="column">
+          <Box mBottom={10}>
+            <Typography variant="bold" size={13} color="subtext">
+              COLLECTIONS
+            </Typography>
+          </Box>
+          <View
+            style={[
+              styles.collectionListWrapper,
+              { backgroundColor: colors.surface },
+            ]}
+          >
+            <Pressable
+              style={[
+                styles.collectionPressable,
+                { borderColor: colors.separator, borderTopWidth: 0 },
+              ]}
+              onPress={() => bookmarksHandler({ id, title, image, date })}
+            >
+              <Typography>Finished</Typography>
+              <View
+                style={[
+                  styles.radioCheck,
+                  { borderColor: colors.primary },
+                  isBookmarked(id!) && {
+                    backgroundColor: colors.primary,
+                  },
+                ]}
+              >
+                <FontAwesome
+                  name="check"
+                  style={
+                    isBookmarked(id!)
+                      ? { display: "flex" }
+                      : {
+                          display: "none",
+                        }
+                  }
+                  color={"#fff"}
+                  size={12}
+                />
+              </View>
+            </Pressable>
+            <Pressable
+              style={[
+                styles.collectionPressable,
+                { borderColor: colors.separator, borderTopWidth: 1 },
+              ]}
+              onPress={() => bookmarksHandler({ id, title, image, date })}
+            >
+              <Typography>Watching</Typography>
+              <View
+                style={[
+                  styles.radioCheck,
+                  { borderColor: colors.primary },
+                  isBookmarked(id!) && {
+                    backgroundColor: colors.primary,
+                  },
+                ]}
+              >
+                <FontAwesome
+                  name="check"
+                  style={
+                    isBookmarked(id!)
+                      ? { display: "flex" }
+                      : {
+                          display: "none",
+                        }
+                  }
+                  color={"#fff"}
+                  size={12}
+                />
+              </View>
+            </Pressable>
+            <Pressable
+              style={[
+                styles.collectionPressable,
+                { borderColor: colors.separator, borderTopWidth: 1 },
+              ]}
+              onPress={() => bookmarksHandler({ id, title, image, date })}
+            >
+              <Typography>Interrupted</Typography>
+              <View
+                style={[
+                  styles.radioCheck,
+                  { borderColor: colors.primary },
+                  isBookmarked(id!) && {
+                    backgroundColor: colors.primary,
+                  },
+                ]}
+              >
+                <FontAwesome
+                  name="check"
+                  style={
+                    isBookmarked(id!)
+                      ? { display: "flex" }
+                      : {
+                          display: "none",
+                        }
+                  }
+                  color={"#fff"}
+                  size={12}
+                />
+              </View>
+            </Pressable>
+            <Pressable
+              style={[
+                styles.collectionPressable,
+                { borderColor: colors.separator, borderTopWidth: 1 },
+              ]}
+              onPress={() => bookmarksHandler({ id, title, image, date })}
+            >
+              <Typography>Planned</Typography>
+              <View
+                style={[
+                  styles.radioCheck,
+                  { borderColor: colors.primary },
+                  isBookmarked(id!) && {
+                    backgroundColor: colors.primary,
+                  },
+                ]}
+              >
+                <FontAwesome
+                  name="check"
+                  style={
+                    isBookmarked(id!)
+                      ? { display: "flex" }
+                      : {
+                          display: "none",
+                        }
+                  }
+                  color={"#fff"}
+                  size={12}
+                />
+              </View>
+            </Pressable>
+          </View>
         </Box>
       </ScrollView>
     </SafeArea>
@@ -56,10 +240,32 @@ const styles = StyleSheet.create({
   image: {
     height: 150,
     aspectRatio: 4 / 6,
+    borderRadius: 5,
   },
   title: {},
   scrollViewWrapper: {
     paddingTop: 30,
     paddingBottom: 10,
+  },
+  collectionListWrapper: {
+    flex: 1,
+    paddingHorizontal: 10,
+    borderRadius: 10,
+  },
+  collectionPressable: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingVertical: 15,
+    borderTopWidth: 0.5,
+  },
+  radioCheck: {
+    width: 19,
+    height: 19,
+    borderRadius: 999,
+    alignItems: "center",
+    justifyContent: "center",
+    marginLeft: "auto",
+    borderWidth: 1,
   },
 });

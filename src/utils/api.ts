@@ -26,4 +26,6 @@ export const fetchAnimeStatistics = (
     .then((res) => res.data);
 
 export const searchAnimes = (q: string): Promise<JikanResponse<Anime[]>> =>
-  axios.get(`https://api.jikan.moe/v4/anime?q=${q}`).then((res) => res.data);
+  axios
+    .get(`https://api.jikan.moe/v4/anime?q=${q}&order_by=members&sort=desc`)
+    .then((res) => res.data);

@@ -22,7 +22,6 @@ import { Typography } from "../../components/Typography";
 import { TopAnimeFilter } from "../../models";
 import { AnimeHorizontal } from "../../components/AnimeHorizontal";
 import { SearchContext } from "../../context/SearchContext";
-import { Spacer } from "../../components/Spacer";
 import { Chip } from "../../components/Chip";
 
 interface ISearchScreenProps {
@@ -110,7 +109,7 @@ const SearchScreen: FC<ISearchScreenProps> = ({ navigation }) => {
           )}
         />
       ) : (
-        <ScrollView>
+        <ScrollView contentContainerStyle={styles.scrollViewWrapper}>
           {searchHistory.length > 0 && (
             <Box flexDirection="column" pX={15} mBottom={20}>
               <Box justify="space-between" mBottom={10}>
@@ -123,17 +122,13 @@ const SearchScreen: FC<ISearchScreenProps> = ({ navigation }) => {
               </Box>
               <View style={styles.searchHistoryWrapper}>
                 {searchHistory.map((el, index) => (
-                  <Chip>
-                    <Pressable
-                      style={[
-                        styles.searchHistoryChip,
-                        { backgroundColor: colors.card },
-                      ]}
-                      key={index}
-                      onPress={() =>
-                        navigation.navigate("AnimeDetailsScreen", { id: el.id })
-                      }
-                    >
+                  <Pressable
+                    key={index}
+                    onPress={() =>
+                      navigation.navigate("AnimeDetailsScreen", { id: el.id })
+                    }
+                  >
+                    <Chip style={[styles.searchHistoryChip]}>
                       <Typography numberOfLines={1}>{el.title}</Typography>
                       <Pressable
                         onPress={() =>
@@ -149,8 +144,8 @@ const SearchScreen: FC<ISearchScreenProps> = ({ navigation }) => {
                           size={18}
                         />
                       </Pressable>
-                    </Pressable>
-                  </Chip>
+                    </Chip>
+                  </Pressable>
                 ))}
               </View>
             </Box>
@@ -186,6 +181,7 @@ export default SearchScreen;
 
 const styles = StyleSheet.create({
   flatlistWrapper: { paddingHorizontal: 10 },
+  scrollViewWrapper: { paddingVertical: 20 },
   searchHistoryWrapper: {
     flexDirection: "row",
     flexWrap: "wrap",

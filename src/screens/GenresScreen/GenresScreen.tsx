@@ -40,16 +40,15 @@ const GenresScreen: FC<IGenresScreenProps> = ({ navigation }) => {
         contentContainerStyle={styles.flatlist}
         data={genres.data?.data}
         renderItem={({ item }) => (
-          <Chip>
-            <Pressable
-              style={[styles.genresTile, { backgroundColor: colors.card }]}
-              onPress={() =>
-                navigation.push("AnimesByGenresScreen", {
-                  id: item.mal_id,
-                  genre: item.name,
-                })
-              }
-            >
+          <Pressable
+            onPress={() =>
+              navigation.push("AnimesByGenresScreen", {
+                id: item.mal_id,
+                genre: item.name,
+              })
+            }
+          >
+            <Chip style={styles.genresTile}>
               <Box flexDirection="column">
                 <Typography variant="bold">{item.name}</Typography>
 
@@ -63,8 +62,8 @@ const GenresScreen: FC<IGenresScreenProps> = ({ navigation }) => {
                 color={colors.primary}
                 size={20}
               />
-            </Pressable>
-          </Chip>
+            </Chip>
+          </Pressable>
         )}
       />
     </SafeArea>

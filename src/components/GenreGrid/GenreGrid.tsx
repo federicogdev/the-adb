@@ -5,6 +5,7 @@ import { Genre } from "../../data/genres";
 import { Typography } from "../Typography";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { AppStackParams } from "../../types/navigation";
+import { Chip } from "../Chip";
 
 interface IGenreGridProps {
   genres: Genre[][];
@@ -33,26 +34,27 @@ const GenreGrid: FC<IGenreGridProps> = ({ genres }) => {
           ]}
         >
           {item.map((el, i) => (
-            <Pressable
-              key={i}
-              style={[
-                styles.genreChip,
-                {
-                  backgroundColor: colors.card,
-                  width: i === 0 ? "100%" : "48%",
-                },
-              ]}
-              onPress={() =>
-                navigation.push("AnimesByGenresScreen", {
-                  id: el.mal_id,
-                  genre: el.name,
-                })
-              }
+            <Chip
+              style={[styles.genreChip, { width: i === 0 ? "100%" : "48%" }]}
             >
-              <Typography variant="bold" numberOfLines={1} adjustsFontSizeToFit>
-                {el.name}
-              </Typography>
-            </Pressable>
+              <Pressable
+                key={i}
+                onPress={() =>
+                  navigation.push("AnimesByGenresScreen", {
+                    id: el.mal_id,
+                    genre: el.name,
+                  })
+                }
+              >
+                <Typography
+                  variant="bold"
+                  numberOfLines={1}
+                  adjustsFontSizeToFit
+                >
+                  {el.name}
+                </Typography>
+              </Pressable>
+            </Chip>
           ))}
         </View>
       )}

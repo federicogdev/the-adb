@@ -20,6 +20,7 @@ import { Typography } from "../../components/Typography";
 import { Spacer } from "../../components/Spacer";
 import { shortenNumber } from "../../utils/number";
 import dayjs from "dayjs";
+import { Chip } from "../../components/Chip";
 
 interface IAnimeDetailsScreenProps {
   navigation: NativeStackNavigationProp<AppStackParams, "AnimeDetailsScreen">;
@@ -102,36 +103,48 @@ const AnimeDetailsScreen: FC<IAnimeDetailsScreenProps> = ({
 
         {/* RANKINGS POPULARITY MEMBERS */}
         <Box mTop={10} justify="space-around" pX={15}>
-          <Box
-            style={[styles.chip, { backgroundColor: colors.card }]}
-            pX={7.5}
-            pY={5}
-          >
-            <Typography size={13} color="subtext">
-              Ranked:{" "}
-              <Typography size={13} variant="bold">
-                #{animeDetails.data?.data.rank}
+          <Chip>
+            <Box
+              // style={[styles.chip, { backgroundColor: colors.card }]}
+              pX={7.5}
+              pY={5}
+            >
+              <Typography size={13} color="subtext">
+                Ranked:{" "}
+                <Typography size={13} variant="bold">
+                  {animeDetails.data?.data.rank
+                    ? `#${animeDetails.data.data.rank}`
+                    : "N/A"}
+                </Typography>
               </Typography>
-            </Typography>
-          </Box>
+            </Box>
+          </Chip>
 
-          <Box style={{ backgroundColor: colors.card }} pX={7.5} pY={5}>
-            <Typography size={13} color="subtext">
-              Popularity:{" "}
-              <Typography size={13} variant="bold">
-                #{animeDetails.data?.data.popularity}
+          <Chip>
+            <Box pX={7.5} pY={5}>
+              <Typography size={13} color="subtext">
+                Popularity:{" "}
+                <Typography size={13} variant="bold">
+                  {animeDetails.data?.data.popularity
+                    ? `#${animeDetails.data.data.popularity}`
+                    : "N/A"}
+                </Typography>
               </Typography>
-            </Typography>
-          </Box>
+            </Box>
+          </Chip>
 
-          <Box style={{ backgroundColor: colors.card }} pX={7.5} pY={5}>
-            <Typography size={13} color="subtext">
-              Members:{" "}
-              <Typography size={13} variant="bold">
-                {shortenNumber(animeDetails.data?.data.members!)}
+          <Chip>
+            <Box pX={7.5} pY={5}>
+              <Typography size={13} color="subtext">
+                Members:{" "}
+                <Typography size={13} variant="bold">
+                  {animeDetails.data?.data
+                    ? shortenNumber(animeDetails.data?.data.members!)
+                    : "N/A"}
+                </Typography>
               </Typography>
-            </Typography>
-          </Box>
+            </Box>
+          </Chip>
         </Box>
 
         {/* SYNOPSIS */}
@@ -143,131 +156,6 @@ const AnimeDetailsScreen: FC<IAnimeDetailsScreenProps> = ({
           </Box>
           <Typography>{animeDetails.data?.data.synopsis}</Typography>
         </Box>
-
-        {/* STATUS */}
-        <Box mTop={20} pX={15} flexDirection="column">
-          <Box mBottom={10}>
-            <Typography variant="bold" size={13} color="subtext">
-              STATUS
-            </Typography>
-          </Box>
-          <Typography>{animeDetails.data?.data.status} </Typography>
-        </Box>
-        {/* AIRING DATE */}
-        <Box mTop={20} pX={15} flexDirection="column">
-          <Box mBottom={10}>
-            <Typography variant="bold" size={13} color="subtext">
-              AIRED
-            </Typography>
-          </Box>
-          <Typography>
-            {animeDetails.data?.data.aired.from
-              ? dayjs(animeDetails.data?.data.aired.from).format("MMMM D, YYYY")
-              : "?"}{" "}
-            to{" "}
-            {animeDetails.data?.data.aired.to
-              ? dayjs(animeDetails.data?.data.aired.to).format("MMMM D, YYYY")
-              : "?"}
-          </Typography>
-        </Box>
-
-        {/* GENRES */}
-        <Box mTop={20} pX={15} flexDirection="column">
-          <Box mBottom={10}>
-            <Typography variant="bold" size={13} color="subtext">
-              GENRES
-            </Typography>
-          </Box>
-          <View style={styles.chipContainer}>
-            {animeDetails.data?.data.genres.map((el, i) => (
-              //TODO: Give a color to each specific genres?
-              <Box
-                key={i}
-                style={[
-                  styles.chip,
-                  { backgroundColor: colors.card, marginBottom: 5 },
-                ]}
-                mRight={5}
-                pX={7.5}
-                pY={5}
-                mBottom={7.5}
-              >
-                <Pressable
-                  onPress={() => {
-                    navigation.push("AnimesByGenresScreen", {
-                      id: el.mal_id,
-                      genre: el.name,
-                    });
-                  }}
-                >
-                  <Typography>{el.name}</Typography>
-                </Pressable>
-              </Box>
-            ))}
-          </View>
-        </Box>
-
-        {/* PRODUCERS */}
-        {animeDetails.data?.data.producers &&
-          animeDetails.data?.data.producers.length > 0 && (
-            <Box mTop={20} pX={15} flexDirection="column">
-              <Box mBottom={10}>
-                <Typography variant="bold" size={13} color="subtext">
-                  PRODUCERS
-                </Typography>
-              </Box>
-              <View style={styles.chipContainer}>
-                {animeDetails.data?.data.producers.map((el, i) => (
-                  <Box
-                    key={i}
-                    style={[
-                      styles.chip,
-                      { backgroundColor: colors.card, marginBottom: 5 },
-                    ]}
-                    mRight={5}
-                    pX={7.5}
-                    pY={5}
-                    mBottom={7.5}
-                  >
-                    <Pressable>
-                      <Typography>{el.name}</Typography>
-                    </Pressable>
-                  </Box>
-                ))}
-              </View>
-            </Box>
-          )}
-
-        {/* LICENSORS */}
-        {animeDetails.data?.data.licensors &&
-          animeDetails.data?.data.licensors.length > 0 && (
-            <Box mTop={20} pX={15} flexDirection="column">
-              <Box mBottom={10}>
-                <Typography variant="bold" size={13} color="subtext">
-                  LICENSORS
-                </Typography>
-              </Box>
-              <View style={styles.chipContainer}>
-                {animeDetails.data?.data.licensors.map((el, i) => (
-                  <Box
-                    key={i}
-                    style={[
-                      styles.chip,
-                      { backgroundColor: colors.card, marginBottom: 5 },
-                    ]}
-                    mRight={5}
-                    pX={7.5}
-                    pY={5}
-                    mBottom={7.5}
-                  >
-                    <Pressable>
-                      <Typography>{el.name}</Typography>
-                    </Pressable>
-                  </Box>
-                ))}
-              </View>
-            </Box>
-          )}
       </ScrollView>
     </SafeArea>
   );

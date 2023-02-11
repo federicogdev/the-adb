@@ -6,6 +6,8 @@ import {
   Image,
   View,
   Pressable,
+  ImageBackground,
+  TouchableOpacity,
 } from "react-native";
 import { RouteProp, useTheme } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -36,15 +38,7 @@ const AnimeDetailsScreen: FC<IAnimeDetailsScreenProps> = ({
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <Box>
-          <Ionicons
-            name="md-bookmark-outline"
-            size={22}
-            color={colors.primary}
-          />
-          <Spacer x={5} />
-          <Ionicons name="md-add" size={22} color={colors.primary} />
-        </Box>
+        <Ionicons name="md-bookmark-outline" size={22} color={colors.primary} />
       ),
     });
   }, [navigation]);
@@ -66,13 +60,29 @@ const AnimeDetailsScreen: FC<IAnimeDetailsScreenProps> = ({
   return (
     <SafeArea>
       <ScrollView>
-        <Box justify="center" align="center" mTop={20}>
-          <Image
-            source={{ uri: animeDetails.data?.data.images.jpg.large_image_url }}
-            style={[styles.coverImage, { borderColor: colors.separator }]}
-          />
+        <Box justify="center" mTop={20}>
+          <View style={styles.container}>
+            <ImageBackground
+              resizeMode="cover"
+              style={styles.cover}
+              source={{
+                uri: animeDetails.data?.data.images.jpg.large_image_url,
+              }}
+            >
+              <Pressable
+                style={[
+                  styles.plusIconWrapper,
+                  { backgroundColor: colors.primary },
+                ]}
+                onPress={() =>
+                  navigation.push("AddToCollectionsScreen", { id: id })
+                }
+              >
+                <Ionicons name="md-add-outline" size={30} color="#fff" />
+              </Pressable>
+            </ImageBackground>
+          </View>
         </Box>
-        {/* TITLE */}
         <Box pX={20} mTop={20} align="center" justify="center">
           <Typography
             size={22}
@@ -187,5 +197,25 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "flex-start",
+  },
+
+  container: {
+    width: 166,
+    aspectRatio: 4 / 6,
+    borderRadius: 10,
+    borderWidth: 1,
+  },
+  cover: {
+    flex: 1,
+    borderRadius: 5,
+    justifyContent: "flex-end",
+    alignItems: "center",
+    overflow: "hidden",
+  },
+  plusIconWrapper: {
+    marginBottom: 10,
+    borderRadius: 5,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

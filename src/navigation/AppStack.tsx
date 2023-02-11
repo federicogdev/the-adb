@@ -12,6 +12,7 @@ import { SettingsContext } from "../context/SettingsContext";
 import { SeeMoreAnimesScreen } from "../screens/SeeMoreAnimesScreen";
 import { GenresScreen } from "../screens/GenresScreen";
 import { AnimesByGenresScreen } from "../screens/AnimesByGenresScreen";
+import { AddToCollectionsScreen } from "../screens/AddToCollectionsScreen";
 
 const Stack = createNativeStackNavigator<AppStackParams>();
 
@@ -68,6 +69,12 @@ export const AppStack = () => {
         options={({ route }) => ({
           headerTitle: route.params.genre,
         })}
+      />
+
+      <Stack.Screen
+        name="AddToCollectionsScreen"
+        component={AddToCollectionsScreen}
+        options={{ presentation: "formSheet", headerShown: false }}
       />
     </Stack.Navigator>
   );

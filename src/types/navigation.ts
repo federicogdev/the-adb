@@ -11,4 +11,5 @@ export type AppStackParams = {
   AnimeDetailsScreen: { id: number };
   SeeMoreAnimesScreen: { title: string };
   AnimesByGenresScreen: { id: number; genre: string };
+  AddToCollectionsScreen: { id: number };
 };

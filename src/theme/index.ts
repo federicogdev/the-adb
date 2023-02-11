@@ -8,7 +8,7 @@ export const CustomDarkTheme: ExtendedTheme = {
   dark: true,
   colors: {
     ...DarkTheme.colors,
-    primary: "#FF6663",
+    primary: "#1E91D6",
     secondary: "rgb(0, 174, 239)",
     tertiary: "rgb(34, 31, 114)",
     danger: "#BF1A2F",

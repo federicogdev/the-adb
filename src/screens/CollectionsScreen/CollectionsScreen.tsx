@@ -10,11 +10,13 @@ interface Props {}
 const CollectionsScreen = (props: Props) => {
   const {
     bookmarks,
-    finishedAnimes,
-    plannedAnimes,
-    interruptedAnimes,
-    watchingAnimes,
+    collection,
+    // finishedAnimes,
+    // plannedAnimes,
+    // interruptedAnimes,
+    // watchingAnimes,
   } = useContext(CollectionsContext);
+  console.log(collection);
   return (
     <SafeArea>
       <Button title="LOL" onPress={() => AsyncStorage.clear()} />
@@ -24,24 +26,13 @@ const CollectionsScreen = (props: Props) => {
         renderItem={({ item }) => <Typography>{item.title}</Typography>}
       />
       <FlatList
-        ListHeaderComponent={<Typography>Watching</Typography>}
-        data={watchingAnimes}
-        renderItem={({ item }) => <Typography>{item.title}</Typography>}
-      />
-      <FlatList
-        ListHeaderComponent={<Typography>Planned</Typography>}
-        data={plannedAnimes}
-        renderItem={({ item }) => <Typography>{item.title}</Typography>}
-      />
-      <FlatList
-        ListHeaderComponent={<Typography>Interrupted</Typography>}
-        data={interruptedAnimes}
-        renderItem={({ item }) => <Typography>{item.title}</Typography>}
-      />
-      <FlatList
-        ListHeaderComponent={<Typography>Finished</Typography>}
-        data={finishedAnimes}
-        renderItem={({ item }) => <Typography>{item.title}</Typography>}
+        ListHeaderComponent={<Typography>Collection</Typography>}
+        data={collection}
+        renderItem={({ item }) => (
+          <Typography>
+            {item.title} - {item.category}
+          </Typography>
+        )}
       />
     </SafeArea>
   );

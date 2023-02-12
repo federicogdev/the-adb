@@ -5,47 +5,41 @@ interface ICollectionsContextProviderProps {
   children: React.ReactNode;
 }
 
-interface ICollectionItem {
+interface IBookmarkItem {
   id: number;
   image: string;
   title: string;
   date: string;
 }
 
+interface ICollectionItem extends IBookmarkItem {
+  category: string;
+}
+
 interface ICollectionsContextState {
-  bookmarks: ICollectionItem[];
-  finishedAnimes: ICollectionItem[];
-  plannedAnimes: ICollectionItem[];
-  watchingAnimes: ICollectionItem[];
-  interruptedAnimes: ICollectionItem[];
+  bookmarks: IBookmarkItem[];
+  collection: ICollectionItem[];
   isBookmarked: (id: number) => boolean;
-  bookmarksHandler: (game: ICollectionItem) => void;
+  bookmarksHandler: (anime: IBookmarkItem) => void;
+  addToCollection: (anime: ICollectionItem) => void;
+  removeFromCollection: (anime: ICollectionItem) => void;
   isFinished: (id: number) => boolean;
-  finishedAnimesHandler: (game: ICollectionItem) => void;
   isPlanned: (id: number) => boolean;
-  plannedAnimesHandler: (game: ICollectionItem) => void;
   isWatching: (id: number) => boolean;
-  watchingAnimesHandler: (game: ICollectionItem) => void;
   isInterrupted: (id: number) => boolean;
-  interrupedAnimesHandler: (game: ICollectionItem) => void;
 }
 
 const contextDefaultValue: ICollectionsContextState = {
   bookmarks: [],
-  finishedAnimes: [],
-  watchingAnimes: [],
-  interruptedAnimes: [],
-  plannedAnimes: [],
+  collection: [],
   isBookmarked: () => false,
   bookmarksHandler: () => {},
+  addToCollection: () => {},
+  removeFromCollection: () => {},
   isFinished: () => false,
-  finishedAnimesHandler: () => {},
   isPlanned: () => false,
-  plannedAnimesHandler: () => {},
   isWatching: () => false,
-  watchingAnimesHandler: () => {},
   isInterrupted: () => false,
-  interrupedAnimesHandler: () => {},
 };
 
 export const CollectionsContext =
@@ -54,35 +48,27 @@ export const CollectionsContext =
 export const CollectionsContextProvider: FC<
   ICollectionsContextProviderProps
 > = ({ children }) => {
-  const [bookmarks, setBookmarks] = useState<ICollectionItem[]>(
+  const [bookmarks, setBookmarks] = useState<IBookmarkItem[]>(
     contextDefaultValue.bookmarks
   );
-  const [finishedAnimes, setFinishedAnimes] = useState<ICollectionItem[]>(
-    contextDefaultValue.finishedAnimes
-  );
-  const [plannedAnimes, setPlannedAnimes] = useState<ICollectionItem[]>(
-    contextDefaultValue.plannedAnimes
-  );
-  const [watchingAnimes, setWatchingAnimes] = useState<ICollectionItem[]>(
-    contextDefaultValue.watchingAnimes
-  );
-  const [interruptedAnimes, setInterruptedAnimes] = useState<ICollectionItem[]>(
-    contextDefaultValue.bookmarks
+
+  const [collection, setCollection] = useState<ICollectionItem[]>(
+    contextDefaultValue.collection
   );
 
   const isBookmarked = (id: number) => {
     return bookmarks.some((_anime) => _anime.id === id);
   };
 
-  const addToBookmarks = (anime: ICollectionItem) => {
+  const addToBookmarks = (anime: IBookmarkItem) => {
     setBookmarks([anime, ...bookmarks]);
   };
 
-  const removeFromBookmarks = (anime: ICollectionItem) => {
+  const removeFromBookmarks = (anime: IBookmarkItem) => {
     setBookmarks(bookmarks.filter((_anime) => _anime.id !== anime.id));
   };
 
-  const bookmarksHandler = (anime: ICollectionItem) => {
+  const bookmarksHandler = (anime: IBookmarkItem) => {
     if (!isBookmarked(anime.id)) {
       addToBookmarks(anime);
     } else {
@@ -90,7 +76,7 @@ export const CollectionsContextProvider: FC<
     }
   };
 
-  const saveBookmarks = async (value: ICollectionItem[]) => {
+  const saveBookmarks = async (value: IBookmarkItem[]) => {
     try {
       const jsonValue = JSON.stringify(value);
       await AsyncStorage.setItem("@theadb/bookmarks", jsonValue);
@@ -110,190 +96,45 @@ export const CollectionsContextProvider: FC<
     }
   };
 
+  const addToCollection = (anime: ICollectionItem) => {
+    if (collection.some((el) => el.id === anime.id)) {
+      collection.splice(collection.findIndex((x) => x.id === anime.id));
+    }
+    setCollection([anime, ...collection]);
+  };
+
+  const removeFromCollection = (anime: ICollectionItem) => {
+    setCollection(collection.filter((el) => el.id !== anime.id));
+  };
+
   const isFinished = (id: number) => {
-    return finishedAnimes.some((_anime) => _anime.id === id);
-  };
-
-  const addToFinishedAnimes = (anime: ICollectionItem) => {
-    setFinishedAnimes([anime, ...finishedAnimes]);
-  };
-
-  const removeFromFinishedAnimes = (anime: ICollectionItem) => {
-    setFinishedAnimes(
-      finishedAnimes.filter((_anime) => _anime.id !== anime.id)
-    );
-  };
-
-  const finishedAnimesHandler = (anime: ICollectionItem) => {
-    if (isFinished(anime.id)) {
-      removeFromFinishedAnimes(anime);
-      removeFromInterruptedAnimes(anime);
-      removeFromWatchingAnimes(anime);
-      removeFromPlannedAnimes(anime);
-    } else {
-      addToFinishedAnimes(anime);
-      removeFromInterruptedAnimes(anime);
-      removeFromWatchingAnimes(anime);
-      removeFromPlannedAnimes(anime);
-    }
-  };
-
-  const saveFinishedAnimes = async (value: ICollectionItem[]) => {
-    try {
-      const jsonValue = JSON.stringify(value);
-      await AsyncStorage.setItem("@theadb/finishedAnimes", jsonValue);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const loadFinishedItems = async () => {
-    try {
-      const value = await AsyncStorage.getItem("@theadb/finishedAnimes");
-      if (value !== null) {
-        setFinishedAnimes(JSON.parse(value));
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const isPlanned = (id: number) => {
-    return plannedAnimes.some((_anime) => _anime.id === id);
-  };
-
-  const addToPlannedAnimes = (anime: ICollectionItem) => {
-    setPlannedAnimes([anime, ...plannedAnimes]);
-  };
-
-  const removeFromPlannedAnimes = (anime: ICollectionItem) => {
-    setPlannedAnimes(plannedAnimes.filter((_anime) => _anime.id !== anime.id));
-  };
-
-  const plannedAnimesHandler = (anime: ICollectionItem) => {
-    if (isPlanned(anime.id)) {
-      removeFromFinishedAnimes(anime);
-      removeFromInterruptedAnimes(anime);
-      removeFromWatchingAnimes(anime);
-      removeFromPlannedAnimes(anime);
-    } else {
-      removeFromFinishedAnimes(anime);
-      removeFromInterruptedAnimes(anime);
-      removeFromWatchingAnimes(anime);
-      addToPlannedAnimes(anime);
-    }
-  };
-
-  const savePlannedAnimes = async (value: ICollectionItem[]) => {
-    try {
-      const jsonValue = JSON.stringify(value);
-      await AsyncStorage.setItem("@theadb/plannedAnimes", jsonValue);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const loadPlannedItems = async () => {
-    try {
-      const value = await AsyncStorage.getItem("@theadb/plannedAnimes");
-      if (value !== null) {
-        setFinishedAnimes(JSON.parse(value));
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    return collection.find((el) => el.id === id)?.category === "finished";
   };
 
   const isWatching = (id: number) => {
-    return watchingAnimes.some((_anime) => _anime.id === id);
+    return collection.find((el) => el.id === id)?.category === "watching";
   };
-
-  const addToWatchingAnimes = (anime: ICollectionItem) => {
-    setWatchingAnimes([anime, ...watchingAnimes]);
+  const isPlanned = (id: number) => {
+    return collection.find((el) => el.id === id)?.category === "planned";
   };
-
-  const removeFromWatchingAnimes = (anime: ICollectionItem) => {
-    setWatchingAnimes(
-      watchingAnimes.filter((_anime) => _anime.id !== anime.id)
-    );
-  };
-
-  const watchingAnimesHandler = (anime: ICollectionItem) => {
-    if (isWatching(anime.id)) {
-      removeFromFinishedAnimes(anime);
-      removeFromInterruptedAnimes(anime);
-      removeFromWatchingAnimes(anime);
-      removeFromPlannedAnimes(anime);
-    } else {
-      removeFromFinishedAnimes(anime);
-      removeFromInterruptedAnimes(anime);
-      addToWatchingAnimes(anime);
-      removeFromPlannedAnimes(anime);
-    }
-  };
-
-  const saveWatchingAnimes = async (value: ICollectionItem[]) => {
-    try {
-      const jsonValue = JSON.stringify(value);
-      await AsyncStorage.setItem("@theadb/watchingAnimes", jsonValue);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const loadWatchingAnimes = async () => {
-    try {
-      const value = await AsyncStorage.getItem("@theadb/watchingAnimes");
-      if (value !== null) {
-        setFinishedAnimes(JSON.parse(value));
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const isInterrupted = (id: number) => {
-    return interruptedAnimes.some((_anime) => _anime.id === id);
+    return collection.find((el) => el.id === id)?.category === "interrupted";
   };
 
-  const addToInterruptedAnimes = (anime: ICollectionItem) => {
-    setInterruptedAnimes([anime, ...interruptedAnimes]);
-  };
-
-  const removeFromInterruptedAnimes = (anime: ICollectionItem) => {
-    setInterruptedAnimes(
-      interruptedAnimes.filter((_anime) => _anime.id !== anime.id)
-    );
-  };
-
-  const interrupedAnimesHandler = (anime: ICollectionItem) => {
-    if (isWatching(anime.id)) {
-      removeFromFinishedAnimes(anime);
-      removeFromInterruptedAnimes(anime);
-      removeFromWatchingAnimes(anime);
-      removeFromPlannedAnimes(anime);
-    } else {
-      addToInterruptedAnimes(anime);
-      removeFromFinishedAnimes(anime);
-      removeFromWatchingAnimes(anime);
-      removeFromPlannedAnimes(anime);
-    }
-  };
-
-  const saveInterruptedAnimes = async (value: ICollectionItem[]) => {
+  const saveCollection = async (value: ICollectionItem[]) => {
     try {
       const jsonValue = JSON.stringify(value);
-      await AsyncStorage.setItem("@theadb/interruptedAnimes", jsonValue);
+      await AsyncStorage.setItem("@theadb/collection", jsonValue);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const loadInterruptedAnimes = async () => {
+  const loadCollection = async () => {
     try {
-      const value = await AsyncStorage.getItem("@theadb/watchingAnimes");
+      const value = await AsyncStorage.getItem("@theadb/collection");
       if (value !== null) {
-        setFinishedAnimes(JSON.parse(value));
+        setBookmarks(JSON.parse(value));
       }
     } catch (error) {
       console.log(error);
@@ -309,55 +150,26 @@ export const CollectionsContextProvider: FC<
   }, []);
 
   useEffect(() => {
-    saveFinishedAnimes(finishedAnimes);
-  }, [finishedAnimes]);
+    saveCollection(collection);
+  }, [collection]);
 
   useEffect(() => {
-    loadFinishedItems();
-  }, []);
-
-  useEffect(() => {
-    savePlannedAnimes(plannedAnimes);
-  }, [plannedAnimes]);
-
-  useEffect(() => {
-    loadPlannedItems();
-  }, []);
-
-  useEffect(() => {
-    saveWatchingAnimes(watchingAnimes);
-  }, [watchingAnimes]);
-
-  useEffect(() => {
-    loadWatchingAnimes();
-  }, []);
-
-  useEffect(() => {
-    saveInterruptedAnimes(interruptedAnimes);
-  }, [interruptedAnimes]);
-
-  useEffect(() => {
-    loadInterruptedAnimes();
+    loadCollection();
   }, []);
 
   return (
     <CollectionsContext.Provider
       value={{
         bookmarks,
-        isBookmarked,
+        collection,
         bookmarksHandler,
-        finishedAnimes,
+        addToCollection,
+        removeFromCollection,
+        isBookmarked,
         isFinished,
-        finishedAnimesHandler,
-        plannedAnimes,
-        isPlanned,
-        plannedAnimesHandler,
-        interruptedAnimes,
         isInterrupted,
-        interrupedAnimesHandler,
-        watchingAnimes,
+        isPlanned,
         isWatching,
-        watchingAnimesHandler,
       }}
     >
       {children}

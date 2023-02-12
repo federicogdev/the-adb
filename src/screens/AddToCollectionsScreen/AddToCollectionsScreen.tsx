@@ -34,14 +34,13 @@ const AddToCollectionsScreen: FC<IAddToCollectionsScreenProps> = ({
     isBookmarked,
     bookmarksHandler,
     isFinished,
-    finishedAnimesHandler,
     isInterrupted,
-    interrupedAnimesHandler,
     isPlanned,
-    plannedAnimesHandler,
     isWatching,
-    watchingAnimesHandler,
+    addToCollection,
+    removeFromCollection,
   } = useContext(CollectionsContext);
+
   return (
     <SafeArea>
       <ScrollView contentContainerStyle={styles.scrollViewWrapper}>
@@ -119,7 +118,23 @@ const AddToCollectionsScreen: FC<IAddToCollectionsScreenProps> = ({
                 styles.collectionPressable,
                 { borderColor: colors.separator, borderTopWidth: 0 },
               ]}
-              onPress={() => finishedAnimesHandler({ id, title, image, date })}
+              onPress={() =>
+                isFinished(id!)
+                  ? removeFromCollection({
+                      id,
+                      title,
+                      image,
+                      date,
+                      category: "finished",
+                    })
+                  : addToCollection({
+                      id,
+                      title,
+                      image,
+                      date,
+                      category: "finished",
+                    })
+              }
             >
               <Typography>Finished</Typography>
               <View
@@ -150,7 +165,23 @@ const AddToCollectionsScreen: FC<IAddToCollectionsScreenProps> = ({
                 styles.collectionPressable,
                 { borderColor: colors.separator, borderTopWidth: 1 },
               ]}
-              onPress={() => watchingAnimesHandler({ id, title, image, date })}
+              onPress={() =>
+                isWatching(id!)
+                  ? removeFromCollection({
+                      id,
+                      title,
+                      image,
+                      date,
+                      category: "watching",
+                    })
+                  : addToCollection({
+                      id,
+                      title,
+                      image,
+                      date,
+                      category: "watching",
+                    })
+              }
             >
               <Typography>Watching</Typography>
               <View
@@ -182,7 +213,21 @@ const AddToCollectionsScreen: FC<IAddToCollectionsScreenProps> = ({
                 { borderColor: colors.separator, borderTopWidth: 1 },
               ]}
               onPress={() =>
-                interrupedAnimesHandler({ id, title, image, date })
+                isInterrupted(id!)
+                  ? removeFromCollection({
+                      id,
+                      title,
+                      image,
+                      date,
+                      category: "interrupted",
+                    })
+                  : addToCollection({
+                      id,
+                      title,
+                      image,
+                      date,
+                      category: "interrupted",
+                    })
               }
             >
               <Typography>Interrupted</Typography>
@@ -214,7 +259,23 @@ const AddToCollectionsScreen: FC<IAddToCollectionsScreenProps> = ({
                 styles.collectionPressable,
                 { borderColor: colors.separator, borderTopWidth: 1 },
               ]}
-              onPress={() => plannedAnimesHandler({ id, title, image, date })}
+              onPress={() =>
+                isPlanned(id!)
+                  ? removeFromCollection({
+                      id,
+                      title,
+                      image,
+                      date,
+                      category: "planned",
+                    })
+                  : addToCollection({
+                      id,
+                      title,
+                      image,
+                      date,
+                      category: "planned",
+                    })
+              }
             >
               <Typography>Planned</Typography>
               <View

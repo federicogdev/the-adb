@@ -15,6 +15,8 @@ import { SafeArea } from "../../components/SafeArea";
 import { Box } from "../../components/Box";
 import { CollectionsContext } from "../../context/CollectionsContext";
 import { FontAwesome } from "@expo/vector-icons";
+import dayjs from "dayjs";
+import { Spacer } from "../../components/Spacer";
 
 interface IAddToCollectionsScreenProps {
   navigation: NativeStackNavigationProp<
@@ -33,10 +35,7 @@ const AddToCollectionsScreen: FC<IAddToCollectionsScreenProps> = ({
   const {
     isBookmarked,
     bookmarksHandler,
-    isFinished,
-    isInterrupted,
-    isPlanned,
-    isWatching,
+    isCategory,
     addToCollection,
     removeFromCollection,
   } = useContext(CollectionsContext);
@@ -47,9 +46,13 @@ const AddToCollectionsScreen: FC<IAddToCollectionsScreenProps> = ({
         <Box pX={15}>
           <Box flex align="center">
             <Image source={{ uri: image }} style={styles.image} />
-            <Box flex pX={10}>
+            <Box flex pX={10} flexDirection="column">
               <Typography variant="bold" size={18} style={styles.title}>
                 {route.params.title}
+              </Typography>
+              <Spacer y={10} />
+              <Typography color="subtext" numberOfLines={1}>
+                {date ? dayjs(date).format("MMMM D, YYYY") : "No Date Avaiable"}
               </Typography>
             </Box>
           </Box>
@@ -107,6 +110,7 @@ const AddToCollectionsScreen: FC<IAddToCollectionsScreenProps> = ({
               COLLECTIONS
             </Typography>
           </Box>
+
           <View
             style={[
               styles.collectionListWrapper,
@@ -116,151 +120,10 @@ const AddToCollectionsScreen: FC<IAddToCollectionsScreenProps> = ({
             <Pressable
               style={[
                 styles.collectionPressable,
-                { borderColor: colors.separator, borderTopWidth: 0 },
+                // { borderColor: colors.separator, borderTopWidth: 1 },
               ]}
               onPress={() =>
-                isFinished(id!)
-                  ? removeFromCollection({
-                      id,
-                      title,
-                      image,
-                      date,
-                      category: "finished",
-                    })
-                  : addToCollection({
-                      id,
-                      title,
-                      image,
-                      date,
-                      category: "finished",
-                    })
-              }
-            >
-              <Typography>Finished</Typography>
-              <View
-                style={[
-                  styles.radioCheck,
-                  { borderColor: colors.primary },
-                  isFinished(id!) && {
-                    backgroundColor: colors.primary,
-                  },
-                ]}
-              >
-                <FontAwesome
-                  name="check"
-                  style={
-                    isFinished(id!)
-                      ? { display: "flex" }
-                      : {
-                          display: "none",
-                        }
-                  }
-                  color={"#fff"}
-                  size={12}
-                />
-              </View>
-            </Pressable>
-            <Pressable
-              style={[
-                styles.collectionPressable,
-                { borderColor: colors.separator, borderTopWidth: 1 },
-              ]}
-              onPress={() =>
-                isWatching(id!)
-                  ? removeFromCollection({
-                      id,
-                      title,
-                      image,
-                      date,
-                      category: "watching",
-                    })
-                  : addToCollection({
-                      id,
-                      title,
-                      image,
-                      date,
-                      category: "watching",
-                    })
-              }
-            >
-              <Typography>Watching</Typography>
-              <View
-                style={[
-                  styles.radioCheck,
-                  { borderColor: colors.primary },
-                  isWatching(id!) && {
-                    backgroundColor: colors.primary,
-                  },
-                ]}
-              >
-                <FontAwesome
-                  name="check"
-                  style={
-                    isWatching(id!)
-                      ? { display: "flex" }
-                      : {
-                          display: "none",
-                        }
-                  }
-                  color={"#fff"}
-                  size={12}
-                />
-              </View>
-            </Pressable>
-            <Pressable
-              style={[
-                styles.collectionPressable,
-                { borderColor: colors.separator, borderTopWidth: 1 },
-              ]}
-              onPress={() =>
-                isInterrupted(id!)
-                  ? removeFromCollection({
-                      id,
-                      title,
-                      image,
-                      date,
-                      category: "interrupted",
-                    })
-                  : addToCollection({
-                      id,
-                      title,
-                      image,
-                      date,
-                      category: "interrupted",
-                    })
-              }
-            >
-              <Typography>Interrupted</Typography>
-              <View
-                style={[
-                  styles.radioCheck,
-                  { borderColor: colors.primary },
-                  isInterrupted(id!) && {
-                    backgroundColor: colors.primary,
-                  },
-                ]}
-              >
-                <FontAwesome
-                  name="check"
-                  style={
-                    isInterrupted(id!)
-                      ? { display: "flex" }
-                      : {
-                          display: "none",
-                        }
-                  }
-                  color={"#fff"}
-                  size={12}
-                />
-              </View>
-            </Pressable>
-            <Pressable
-              style={[
-                styles.collectionPressable,
-                { borderColor: colors.separator, borderTopWidth: 1 },
-              ]}
-              onPress={() =>
-                isPlanned(id!)
+                isCategory(id!, "planned")
                   ? removeFromCollection({
                       id,
                       title,
@@ -282,7 +145,7 @@ const AddToCollectionsScreen: FC<IAddToCollectionsScreenProps> = ({
                 style={[
                   styles.radioCheck,
                   { borderColor: colors.primary },
-                  isPlanned(id!) && {
+                  isCategory(id!, "planned") && {
                     backgroundColor: colors.primary,
                   },
                 ]}
@@ -290,7 +153,7 @@ const AddToCollectionsScreen: FC<IAddToCollectionsScreenProps> = ({
                 <FontAwesome
                   name="check"
                   style={
-                    isPlanned(id!)
+                    isCategory(id!, "planned")
                       ? { display: "flex" }
                       : {
                           display: "none",
@@ -301,6 +164,154 @@ const AddToCollectionsScreen: FC<IAddToCollectionsScreenProps> = ({
                 />
               </View>
             </Pressable>
+
+            {!!date && dayjs(date).unix() * 1000 < Date.now() && (
+              <>
+                <Pressable
+                  style={[
+                    styles.collectionPressable,
+                    { borderColor: colors.separator, borderTopWidth: 1 },
+                  ]}
+                  onPress={() =>
+                    isCategory(id!, "finished")
+                      ? removeFromCollection({
+                          id,
+                          title,
+                          image,
+                          date,
+                          category: "finished",
+                        })
+                      : addToCollection({
+                          id,
+                          title,
+                          image,
+                          date,
+                          category: "finished",
+                        })
+                  }
+                >
+                  <Typography>Finished</Typography>
+                  <View
+                    style={[
+                      styles.radioCheck,
+                      { borderColor: colors.primary },
+                      isCategory(id!, "finished") && {
+                        backgroundColor: colors.primary,
+                      },
+                    ]}
+                  >
+                    <FontAwesome
+                      name="check"
+                      style={
+                        isCategory(id!, "finished")
+                          ? { display: "flex" }
+                          : {
+                              display: "none",
+                            }
+                      }
+                      color={"#fff"}
+                      size={12}
+                    />
+                  </View>
+                </Pressable>
+
+                <Pressable
+                  style={[
+                    styles.collectionPressable,
+                    { borderColor: colors.separator, borderTopWidth: 1 },
+                  ]}
+                  onPress={() =>
+                    isCategory(id!, "watching")
+                      ? removeFromCollection({
+                          id,
+                          title,
+                          image,
+                          date,
+                          category: "watching",
+                        })
+                      : addToCollection({
+                          id,
+                          title,
+                          image,
+                          date,
+                          category: "watching",
+                        })
+                  }
+                >
+                  <Typography>Watching</Typography>
+                  <View
+                    style={[
+                      styles.radioCheck,
+                      { borderColor: colors.primary },
+                      isCategory(id!, "watching") && {
+                        backgroundColor: colors.primary,
+                      },
+                    ]}
+                  >
+                    <FontAwesome
+                      name="check"
+                      style={
+                        isCategory(id!, "watching")
+                          ? { display: "flex" }
+                          : {
+                              display: "none",
+                            }
+                      }
+                      color={"#fff"}
+                      size={12}
+                    />
+                  </View>
+                </Pressable>
+
+                <Pressable
+                  style={[
+                    styles.collectionPressable,
+                    { borderColor: colors.separator, borderTopWidth: 1 },
+                  ]}
+                  onPress={() =>
+                    isCategory(id!, "interrupted")
+                      ? removeFromCollection({
+                          id,
+                          title,
+                          image,
+                          date,
+                          category: "interrupted",
+                        })
+                      : addToCollection({
+                          id,
+                          title,
+                          image,
+                          date,
+                          category: "interrupted",
+                        })
+                  }
+                >
+                  <Typography>Interrupted</Typography>
+                  <View
+                    style={[
+                      styles.radioCheck,
+                      { borderColor: colors.primary },
+                      isCategory(id!, "interrupted") && {
+                        backgroundColor: colors.primary,
+                      },
+                    ]}
+                  >
+                    <FontAwesome
+                      name="check"
+                      style={
+                        isCategory(id!, "interrupted")
+                          ? { display: "flex" }
+                          : {
+                              display: "none",
+                            }
+                      }
+                      color={"#fff"}
+                      size={12}
+                    />
+                  </View>
+                </Pressable>
+              </>
+            )}
           </View>
         </Box>
       </ScrollView>
@@ -323,7 +334,7 @@ const styles = StyleSheet.create({
   },
   collectionListWrapper: {
     flex: 1,
-    paddingHorizontal: 10,
+    paddingHorizontal: 15,
     borderRadius: 10,
   },
   collectionPressable: {

@@ -20,6 +20,7 @@ interface ICollectionsContextState {
   bookmarks: IBookmarkItem[];
   collection: ICollectionItem[];
   isBookmarked: (id: number) => boolean;
+  isCategory: (id: number, category: string) => boolean;
   bookmarksHandler: (anime: IBookmarkItem) => void;
   addToCollection: (anime: ICollectionItem) => void;
   removeFromCollection: (anime: ICollectionItem) => void;
@@ -33,6 +34,7 @@ const contextDefaultValue: ICollectionsContextState = {
   bookmarks: [],
   collection: [],
   isBookmarked: () => false,
+  isCategory: () => false,
   bookmarksHandler: () => {},
   addToCollection: () => {},
   removeFromCollection: () => {},
@@ -107,6 +109,9 @@ export const CollectionsContextProvider: FC<
     setCollection(collection.filter((el) => el.id !== anime.id));
   };
 
+  const isCategory = (id: number, category: string) =>
+    collection.find((el) => el.id === id)?.category === category;
+
   const isFinished = (id: number) => {
     return collection.find((el) => el.id === id)?.category === "finished";
   };
@@ -170,6 +175,7 @@ export const CollectionsContextProvider: FC<
         isInterrupted,
         isPlanned,
         isWatching,
+        isCategory,
       }}
     >
       {children}

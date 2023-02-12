@@ -25,7 +25,7 @@ const GenreGrid: FC<IGenreGridProps> = ({ genres }) => {
       snapToAlignment="start"
       decelerationRate={"fast"}
       //this is hardcoded based on the known value of genres.lenght. need to make it dynamic
-      snapToInterval={340}
+      snapToInterval={320}
       renderItem={({ item, index }) => (
         <View
           style={[

@@ -30,7 +30,18 @@ const AddToCollectionsScreen: FC<IAddToCollectionsScreenProps> = ({
 }) => {
   const { id, image, title, date } = route.params;
   const { colors } = useTheme();
-  const { isBookmarked, bookmarksHandler } = useContext(CollectionsContext);
+  const {
+    isBookmarked,
+    bookmarksHandler,
+    isFinished,
+    finishedAnimesHandler,
+    isInterrupted,
+    interrupedAnimesHandler,
+    isPlanned,
+    plannedAnimesHandler,
+    isWatching,
+    watchingAnimesHandler,
+  } = useContext(CollectionsContext);
   return (
     <SafeArea>
       <ScrollView contentContainerStyle={styles.scrollViewWrapper}>
@@ -108,14 +119,14 @@ const AddToCollectionsScreen: FC<IAddToCollectionsScreenProps> = ({
                 styles.collectionPressable,
                 { borderColor: colors.separator, borderTopWidth: 0 },
               ]}
-              onPress={() => bookmarksHandler({ id, title, image, date })}
+              onPress={() => finishedAnimesHandler({ id, title, image, date })}
             >
               <Typography>Finished</Typography>
               <View
                 style={[
                   styles.radioCheck,
                   { borderColor: colors.primary },
-                  isBookmarked(id!) && {
+                  isFinished(id!) && {
                     backgroundColor: colors.primary,
                   },
                 ]}
@@ -123,7 +134,7 @@ const AddToCollectionsScreen: FC<IAddToCollectionsScreenProps> = ({
                 <FontAwesome
                   name="check"
                   style={
-                    isBookmarked(id!)
+                    isFinished(id!)
                       ? { display: "flex" }
                       : {
                           display: "none",
@@ -139,14 +150,14 @@ const AddToCollectionsScreen: FC<IAddToCollectionsScreenProps> = ({
                 styles.collectionPressable,
                 { borderColor: colors.separator, borderTopWidth: 1 },
               ]}
-              onPress={() => bookmarksHandler({ id, title, image, date })}
+              onPress={() => watchingAnimesHandler({ id, title, image, date })}
             >
               <Typography>Watching</Typography>
               <View
                 style={[
                   styles.radioCheck,
                   { borderColor: colors.primary },
-                  isBookmarked(id!) && {
+                  isWatching(id!) && {
                     backgroundColor: colors.primary,
                   },
                 ]}
@@ -154,7 +165,7 @@ const AddToCollectionsScreen: FC<IAddToCollectionsScreenProps> = ({
                 <FontAwesome
                   name="check"
                   style={
-                    isBookmarked(id!)
+                    isWatching(id!)
                       ? { display: "flex" }
                       : {
                           display: "none",
@@ -170,14 +181,16 @@ const AddToCollectionsScreen: FC<IAddToCollectionsScreenProps> = ({
                 styles.collectionPressable,
                 { borderColor: colors.separator, borderTopWidth: 1 },
               ]}
-              onPress={() => bookmarksHandler({ id, title, image, date })}
+              onPress={() =>
+                interrupedAnimesHandler({ id, title, image, date })
+              }
             >
               <Typography>Interrupted</Typography>
               <View
                 style={[
                   styles.radioCheck,
                   { borderColor: colors.primary },
-                  isBookmarked(id!) && {
+                  isInterrupted(id!) && {
                     backgroundColor: colors.primary,
                   },
                 ]}
@@ -185,7 +198,7 @@ const AddToCollectionsScreen: FC<IAddToCollectionsScreenProps> = ({
                 <FontAwesome
                   name="check"
                   style={
-                    isBookmarked(id!)
+                    isInterrupted(id!)
                       ? { display: "flex" }
                       : {
                           display: "none",
@@ -201,14 +214,14 @@ const AddToCollectionsScreen: FC<IAddToCollectionsScreenProps> = ({
                 styles.collectionPressable,
                 { borderColor: colors.separator, borderTopWidth: 1 },
               ]}
-              onPress={() => bookmarksHandler({ id, title, image, date })}
+              onPress={() => plannedAnimesHandler({ id, title, image, date })}
             >
               <Typography>Planned</Typography>
               <View
                 style={[
                   styles.radioCheck,
                   { borderColor: colors.primary },
-                  isBookmarked(id!) && {
+                  isPlanned(id!) && {
                     backgroundColor: colors.primary,
                   },
                 ]}
@@ -216,7 +229,7 @@ const AddToCollectionsScreen: FC<IAddToCollectionsScreenProps> = ({
                 <FontAwesome
                   name="check"
                   style={
-                    isBookmarked(id!)
+                    isPlanned(id!)
                       ? { display: "flex" }
                       : {
                           display: "none",

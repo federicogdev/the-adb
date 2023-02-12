@@ -25,9 +25,9 @@ interface ICollectionsContextState {
   isPlanned: (id: number) => boolean;
   plannedAnimesHandler: (game: ICollectionItem) => void;
   isWatching: (id: number) => boolean;
-  watchingAnimesHanlder: (game: ICollectionItem) => void;
+  watchingAnimesHandler: (game: ICollectionItem) => void;
   isInterrupted: (id: number) => boolean;
-  interruptedAnimesHanlder: (game: ICollectionItem) => void;
+  interrupedAnimesHandler: (game: ICollectionItem) => void;
 }
 
 const contextDefaultValue: ICollectionsContextState = {
@@ -43,9 +43,9 @@ const contextDefaultValue: ICollectionsContextState = {
   isPlanned: () => false,
   plannedAnimesHandler: () => {},
   isWatching: () => false,
-  watchingAnimesHanlder: () => {},
+  watchingAnimesHandler: () => {},
   isInterrupted: () => false,
-  interruptedAnimesHanlder: () => {},
+  interrupedAnimesHandler: () => {},
 };
 
 export const CollectionsContext =
@@ -125,7 +125,7 @@ export const CollectionsContextProvider: FC<
   };
 
   const finishedAnimesHandler = (anime: ICollectionItem) => {
-    if (!isFinished(anime.id)) {
+    if (isFinished(anime.id)) {
       removeFromFinishedAnimes(anime);
       removeFromInterruptedAnimes(anime);
       removeFromWatchingAnimes(anime);
@@ -171,7 +171,7 @@ export const CollectionsContextProvider: FC<
   };
 
   const plannedAnimesHandler = (anime: ICollectionItem) => {
-    if (!isPlanned(anime.id)) {
+    if (isPlanned(anime.id)) {
       removeFromFinishedAnimes(anime);
       removeFromInterruptedAnimes(anime);
       removeFromWatchingAnimes(anime);
@@ -218,8 +218,8 @@ export const CollectionsContextProvider: FC<
     );
   };
 
-  const watchingAnimesHanlder = (anime: ICollectionItem) => {
-    if (!isWatching(anime.id)) {
+  const watchingAnimesHandler = (anime: ICollectionItem) => {
+    if (isWatching(anime.id)) {
       removeFromFinishedAnimes(anime);
       removeFromInterruptedAnimes(anime);
       removeFromWatchingAnimes(anime);
@@ -266,8 +266,8 @@ export const CollectionsContextProvider: FC<
     );
   };
 
-  const interruptedAnimesHanlder = (anime: ICollectionItem) => {
-    if (!isWatching(anime.id)) {
+  const interrupedAnimesHandler = (anime: ICollectionItem) => {
+    if (isWatching(anime.id)) {
       removeFromFinishedAnimes(anime);
       removeFromInterruptedAnimes(anime);
       removeFromWatchingAnimes(anime);
@@ -354,10 +354,10 @@ export const CollectionsContextProvider: FC<
         plannedAnimesHandler,
         interruptedAnimes,
         isInterrupted,
-        interruptedAnimesHanlder,
+        interrupedAnimesHandler,
         watchingAnimes,
         isWatching,
-        watchingAnimesHanlder,
+        watchingAnimesHandler,
       }}
     >
       {children}

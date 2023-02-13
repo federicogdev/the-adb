@@ -17,4 +17,5 @@ export type AppStackParams = {
     title: string;
     date: string;
   };
+  AnimesByCollectionsScreen: { collection: string };
 };

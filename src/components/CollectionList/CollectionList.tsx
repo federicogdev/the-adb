@@ -29,7 +29,7 @@ const CollectionList: FC<ICollectionListProps> = ({ collection }) => {
     useNavigation<NativeStackNavigationProp<AppStackParams, "AppTabs">>();
 
   return (
-    <Box flexDirection="column" mBottom={20} mTop={10}>
+    <Box flexDirection="column" mBottom={10} mTop={10}>
       <Box pX={15} mBottom={10} justify="space-between" align="center">
         <Box flexDirection="column">
           <Typography
@@ -46,7 +46,15 @@ const CollectionList: FC<ICollectionListProps> = ({ collection }) => {
           </Typography>
         </Box>
 
-        <Typography variant="bold" color="primary">
+        <Typography
+          variant="bold"
+          color="primary"
+          onPress={() => {
+            navigation.push("AnimesByCollectionsScreen", {
+              collection: collection,
+            });
+          }}
+        >
           See More
         </Typography>
       </Box>
@@ -65,14 +73,13 @@ const CollectionList: FC<ICollectionListProps> = ({ collection }) => {
             }
             style={[
               styles.coverWrapper,
-              [
-                index ===
-                  animesCollection.filter((el) => el.category === collection)
-                    .length -
-                    1 && {
-                  marginRight: 15,
-                },
-              ],
+              index ===
+                animesCollection.filter((el) => el.category === collection)
+                  .length -
+                  1 && {
+                marginRight: 15,
+              },
+              { borderColor: colors.separator },
             ]}
           >
             <Image

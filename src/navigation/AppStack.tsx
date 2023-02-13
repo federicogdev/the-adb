@@ -13,6 +13,7 @@ import { SeeMoreAnimesScreen } from "../screens/SeeMoreAnimesScreen";
 import { GenresScreen } from "../screens/GenresScreen";
 import { AnimesByGenresScreen } from "../screens/AnimesByGenresScreen";
 import { AddToCollectionsScreen } from "../screens/AddToCollectionsScreen";
+import AnimesByCollectionsScreen from "../screens/AnimesByCollectionsScreen/AnimesByCollectionsScreen";
 
 const Stack = createNativeStackNavigator<AppStackParams>();
 
@@ -68,6 +69,15 @@ export const AppStack = () => {
         component={AnimesByGenresScreen}
         options={({ route }) => ({
           headerTitle: route.params.genre,
+        })}
+      />
+      <Stack.Screen
+        name="AnimesByCollectionsScreen"
+        component={AnimesByCollectionsScreen}
+        options={({ route }) => ({
+          headerTitle:
+            route.params.collection.charAt(0).toUpperCase() +
+            route.params.collection.slice(1),
         })}
       />
 

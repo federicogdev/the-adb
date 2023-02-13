@@ -1,47 +1,21 @@
 import React, { FC, createContext, useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ICollectionAnime } from "../types/types";
 
 interface ICollectionsContextProviderProps {
   children: React.ReactNode;
 }
 
-interface IBookmarkItem {
-  id: number;
-  image: string;
-  title: string;
-  date: string;
-}
-
-interface ICollectionItem extends IBookmarkItem {
-  category: string;
-}
-
 interface ICollectionsContextState {
-  bookmarks: IBookmarkItem[];
-  collection: ICollectionItem[];
-  isBookmarked: (id: number) => boolean;
-  isCategory: (id: number, category: string) => boolean;
-  bookmarksHandler: (anime: IBookmarkItem) => void;
-  addToCollection: (anime: ICollectionItem) => void;
-  removeFromCollection: (anime: ICollectionItem) => void;
-  isFinished: (id: number) => boolean;
-  isPlanned: (id: number) => boolean;
-  isWatching: (id: number) => boolean;
-  isInterrupted: (id: number) => boolean;
+  animesCollection: ICollectionAnime[];
+  addToCollection: (anime: ICollectionAnime) => void;
+  removeFromCollection: (anime: ICollectionAnime) => void;
 }
 
 const contextDefaultValue: ICollectionsContextState = {
-  bookmarks: [],
-  collection: [],
-  isBookmarked: () => false,
-  isCategory: () => false,
-  bookmarksHandler: () => {},
+  animesCollection: [],
   addToCollection: () => {},
   removeFromCollection: () => {},
-  isFinished: () => false,
-  isPlanned: () => false,
-  isWatching: () => false,
-  isInterrupted: () => false,
 };
 
 export const CollectionsContext =
@@ -50,86 +24,28 @@ export const CollectionsContext =
 export const CollectionsContextProvider: FC<
   ICollectionsContextProviderProps
 > = ({ children }) => {
-  const [bookmarks, setBookmarks] = useState<IBookmarkItem[]>(
-    contextDefaultValue.bookmarks
+  const [animesCollection, setAnimeCollection] = useState<ICollectionAnime[]>(
+    contextDefaultValue.animesCollection
   );
 
-  const [collection, setCollection] = useState<ICollectionItem[]>(
-    contextDefaultValue.collection
-  );
-
-  const isBookmarked = (id: number) => {
-    return bookmarks.some((_anime) => _anime.id === id);
-  };
-
-  const addToBookmarks = (anime: IBookmarkItem) => {
-    setBookmarks([anime, ...bookmarks]);
-  };
-
-  const removeFromBookmarks = (anime: IBookmarkItem) => {
-    setBookmarks(bookmarks.filter((_anime) => _anime.id !== anime.id));
-  };
-
-  const bookmarksHandler = (anime: IBookmarkItem) => {
-    if (!isBookmarked(anime.id)) {
-      addToBookmarks(anime);
-    } else {
-      removeFromBookmarks(anime);
+  const addToCollection = (anime: ICollectionAnime) => {
+    if (animesCollection.some((el) => el.id === anime.id)) {
+      animesCollection.splice(
+        animesCollection.findIndex((_anime) => _anime.id === anime.id)
+      );
     }
+
+    setAnimeCollection([anime, ...animesCollection]);
   };
 
-  const saveBookmarks = async (value: IBookmarkItem[]) => {
+  const removeFromCollection = (anime: ICollectionAnime) => {
+    setAnimeCollection(animesCollection.filter((el) => el.id !== anime.id));
+  };
+
+  const saveAnimesCollection = async (value: ICollectionAnime[]) => {
     try {
       const jsonValue = JSON.stringify(value);
-      await AsyncStorage.setItem("@theadb/bookmarks", jsonValue);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const loadBookmark = async () => {
-    try {
-      const value = await AsyncStorage.getItem("@theadb/bookmarks");
-      if (value !== null) {
-        setBookmarks(JSON.parse(value));
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const addToCollection = (anime: ICollectionItem) => {
-    if (collection.some((el) => el.id === anime.id)) {
-      collection.splice(collection.findIndex((x) => x.id === anime.id));
-    }
-    setCollection([anime, ...collection]);
-  };
-
-  const removeFromCollection = (anime: ICollectionItem) => {
-    setCollection(collection.filter((el) => el.id !== anime.id));
-  };
-
-  const isCategory = (id: number, category: string) =>
-    collection.find((el) => el.id === id)?.category === category;
-
-  const isFinished = (id: number) => {
-    return collection.find((el) => el.id === id)?.category === "finished";
-  };
-
-  const isWatching = (id: number) => {
-    return collection.find((el) => el.id === id)?.category === "watching";
-  };
-  const isPlanned = (id: number) => {
-    return collection.find((el) => el.id === id)?.category === "planned";
-  };
-  const isInterrupted = (id: number) => {
-    return collection.find((el) => el.id === id)?.category === "interrupted";
-  };
-
-  const saveCollection = async (value: ICollectionItem[]) => {
-    try {
-      const jsonValue = JSON.stringify(value);
-      await AsyncStorage.setItem("@theadb/collection", jsonValue);
+      await AsyncStorage.setItem("@theadb/animesCollection", jsonValue);
     } catch (error) {
       console.log(error);
     }
@@ -137,9 +53,9 @@ export const CollectionsContextProvider: FC<
 
   const loadCollection = async () => {
     try {
-      const value = await AsyncStorage.getItem("@theadb/collection");
+      const value = await AsyncStorage.getItem("@theadb/animesCollection");
       if (value !== null) {
-        setBookmarks(JSON.parse(value));
+        setAnimeCollection(JSON.parse(value));
       }
     } catch (error) {
       console.log(error);
@@ -147,36 +63,16 @@ export const CollectionsContextProvider: FC<
   };
 
   useEffect(() => {
-    saveBookmarks(bookmarks);
-  }, [bookmarks]);
-
-  useEffect(() => {
-    loadBookmark();
-  }, []);
-
-  useEffect(() => {
-    saveCollection(collection);
-  }, [collection]);
-
-  useEffect(() => {
     loadCollection();
   }, []);
 
+  useEffect(() => {
+    saveAnimesCollection(animesCollection);
+  }, [animesCollection]);
+
   return (
     <CollectionsContext.Provider
-      value={{
-        bookmarks,
-        collection,
-        bookmarksHandler,
-        addToCollection,
-        removeFromCollection,
-        isBookmarked,
-        isFinished,
-        isInterrupted,
-        isPlanned,
-        isWatching,
-        isCategory,
-      }}
+      value={{ animesCollection, addToCollection, removeFromCollection }}
     >
       {children}
     </CollectionsContext.Provider>

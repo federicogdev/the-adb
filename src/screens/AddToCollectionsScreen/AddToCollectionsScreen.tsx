@@ -33,12 +33,15 @@ const AddToCollectionsScreen: FC<IAddToCollectionsScreenProps> = ({
   const { id, image, title, date } = route.params;
   const { colors } = useTheme();
   const {
-    isBookmarked,
-    bookmarksHandler,
-    isCategory,
+    animesCollection,
+    // isBookmarked,
+    // bookmarksHandler,
     addToCollection,
     removeFromCollection,
   } = useContext(CollectionsContext);
+
+  const isCategory = (id: number, category: string) =>
+    animesCollection.find((el) => el.id === id)?.category === category;
 
   return (
     <SafeArea>
@@ -58,7 +61,7 @@ const AddToCollectionsScreen: FC<IAddToCollectionsScreenProps> = ({
           </Box>
         </Box>
 
-        <Box pX={15} mTop={30} flexDirection="column">
+        {/* <Box pX={15} mTop={30} flexDirection="column">
           <Box mBottom={10}>
             <Typography variant="bold" size={13} color="subtext">
               BOOKMARKS
@@ -102,7 +105,7 @@ const AddToCollectionsScreen: FC<IAddToCollectionsScreenProps> = ({
               </View>
             </Pressable>
           </View>
-        </Box>
+        </Box> */}
 
         <Box pX={15} mTop={30} flexDirection="column">
           <Box mBottom={10}>
@@ -120,7 +123,7 @@ const AddToCollectionsScreen: FC<IAddToCollectionsScreenProps> = ({
             <Pressable
               style={[
                 styles.collectionPressable,
-                // { borderColor: colors.separator, borderTopWidth: 1 },
+                { borderColor: colors.separator, borderTopWidth: 0 },
               ]}
               onPress={() =>
                 isCategory(id!, "planned")

@@ -53,7 +53,7 @@ export const SearchContextProvider: FC<ISearchContextProviderProps> = ({
   const saveSearchHistory = async (value: ISearchItem[]) => {
     try {
       const jsonValue = JSON.stringify(value);
-      await AsyncStorage.setItem("@thadb/searchHistory", jsonValue);
+      await AsyncStorage.setItem("@theadb/searchHistory", jsonValue);
     } catch (error) {
       console.log(error);
     }
@@ -61,7 +61,7 @@ export const SearchContextProvider: FC<ISearchContextProviderProps> = ({
 
   const loadSearchHistory = async () => {
     try {
-      const value = await AsyncStorage.getItem("@thadb/searchHistory");
+      const value = await AsyncStorage.getItem("@theadb/searchHistory");
 
       if (value !== null) {
         setSearchHistory(JSON.parse(value));

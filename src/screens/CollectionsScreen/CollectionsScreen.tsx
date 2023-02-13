@@ -1,39 +1,45 @@
-import { Button, FlatList, StyleSheet, Text, View } from "react-native";
+import {
+  Button,
+  Dimensions,
+  FlatList,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import React, { useContext } from "react";
 import { CollectionsContext } from "../../context/CollectionsContext";
 import { SafeArea } from "../../components/SafeArea";
+
+import { useTheme } from "@react-navigation/native";
+import { CollectionList } from "../../components/CollectionList";
+import { Box } from "../../components/Box";
 import { Typography } from "../../components/Typography";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface Props {}
 
 const CollectionsScreen = (props: Props) => {
   const {
-    bookmarks,
-    collection,
+    // bookmarks,
+    // collection,
+    animesCollection,
     // finishedAnimes,
     // plannedAnimes,
     // interruptedAnimes,
     // watchingAnimes,
   } = useContext(CollectionsContext);
-  console.log(collection);
+
+  const { colors } = useTheme();
+
   return (
     <SafeArea>
-      <Button title="LOL" onPress={() => AsyncStorage.clear()} />
-      <FlatList
-        ListHeaderComponent={<Typography>Bookmark</Typography>}
-        data={bookmarks}
-        renderItem={({ item }) => <Typography>{item.title}</Typography>}
-      />
-      <FlatList
-        ListHeaderComponent={<Typography>Collection</Typography>}
-        data={collection}
-        renderItem={({ item }) => (
-          <Typography>
-            {item.title} - {item.category}
-          </Typography>
-        )}
-      />
+      <ScrollView>
+        <CollectionList collection="finished" />
+        <CollectionList collection="planned" />
+        <CollectionList collection="interrupted" />
+        <CollectionList collection="watching" />
+      </ScrollView>
     </SafeArea>
   );
 };

@@ -14,17 +14,17 @@ const client = new QueryClient();
 const App = (props: Props) => {
   // LogBox.ignoreAllLogs();
   return (
-    <SafeAreaProvider>
-      <QueryClientProvider client={client}>
-        <SettingsContextProvider>
-          <SearchContextProvider>
-            <CollectionsContextProvider>
-              <Routes />
-            </CollectionsContextProvider>
-          </SearchContextProvider>
-        </SettingsContextProvider>
-      </QueryClientProvider>
-    </SafeAreaProvider>
+    // <SafeAreaProvider>
+    <SearchContextProvider>
+      <SettingsContextProvider>
+        <QueryClientProvider client={client}>
+          <CollectionsContextProvider>
+            <Routes />
+          </CollectionsContextProvider>
+        </QueryClientProvider>
+      </SettingsContextProvider>
+    </SearchContextProvider>
+    // </SafeAreaProvider>
   );
 };
 

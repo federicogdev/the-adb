@@ -17,6 +17,7 @@ import { Spacer } from "../Spacer";
 import { useNavigation, useTheme } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { AppStackParams } from "../../types/navigation";
+import { AnimeCollectionCover } from "../AnimeCollectionCover";
 
 interface ICollectionListProps {
   collection: string;
@@ -55,14 +56,16 @@ const CollectionList: FC<ICollectionListProps> = ({ collection }) => {
             });
           }}
         >
-          See More
+          See All
         </Typography>
       </Box>
 
       <FlatList
         showsHorizontalScrollIndicator={false}
         horizontal
-        data={animesCollection.filter((el) => el.category === collection)}
+        data={animesCollection
+          .filter((el) => el.category === collection)
+          .slice(0, 9)}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item, index }) => (
           <Pressable
@@ -82,25 +85,7 @@ const CollectionList: FC<ICollectionListProps> = ({ collection }) => {
               { borderColor: colors.separator },
             ]}
           >
-            <Image
-              source={{ uri: item.image }}
-              style={[
-                styles.cover,
-                { borderColor: colors.separator, width: 120 },
-              ]}
-            />
-            <Spacer y={3} />
-            <Box flexDirection="column">
-              <Typography size={14} variant="bold" numberOfLines={2}>
-                {item.title}
-              </Typography>
-              <Typography color="subtext" size={12} numberOfLines={1}>
-                {item.date
-                  ? dayjs(item.date).format("MMMM D, YYYY")
-                  : "No Date Avaiable"}
-              </Typography>
-              <Spacer y={2.5} />
-            </Box>
+            <AnimeCollectionCover anime={item} width={150} />
           </Pressable>
         )}
       />
@@ -112,7 +97,6 @@ export default CollectionList;
 
 const styles = StyleSheet.create({
   coverWrapper: {
-    width: 120,
     marginLeft: 15,
   },
   cover: { aspectRatio: 4 / 6, borderRadius: 10, borderWidth: 0.5 },

@@ -67,23 +67,20 @@ const SeeMoreAnimesScreen: FC<ISeeMoreAnimeScreenProps> = ({
         keyExtractor={(item) => item.mal_id.toString()}
         data={animes.data?.pages.map((page) => page.data).flat()}
         renderItem={({ item }) => (
-          <View>
-            <Pressable
-              key={item.mal_id}
-              onPress={() =>
-                navigation.push("AnimeDetailsScreen", {
-                  id: item.mal_id,
-                })
-              }
-              style={[{ paddingHorizontal: 5, paddingVertical: 5 }]}
-            >
-              <AnimeCover
-                anime={item}
-                width={(Dimensions.get("screen").width - 50) / 3}
-                multiline={false}
-              />
-            </Pressable>
-          </View>
+          <Pressable
+            onPress={() =>
+              navigation.push("AnimeDetailsScreen", {
+                id: item.mal_id,
+              })
+            }
+            style={[{ paddingHorizontal: 5, paddingVertical: 5 }]}
+          >
+            <AnimeCover
+              anime={item}
+              width={(Dimensions.get("screen").width - 50) / 3}
+              multiline={false}
+            />
+          </Pressable>
         )}
         onEndReached={loadMore}
         onEndReachedThreshold={0.2}

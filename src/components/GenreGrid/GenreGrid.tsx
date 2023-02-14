@@ -1,6 +1,6 @@
 import React, { FC } from "react";
-import { FlatList, StyleSheet, Text, Pressable, View } from "react-native";
-import { useNavigation, useTheme } from "@react-navigation/native";
+import { FlatList, StyleSheet, Pressable, View } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import { Genre } from "../../data/genres";
 import { Typography } from "../Typography";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -14,7 +14,6 @@ interface IGenreGridProps {
 type INavigationProps = NativeStackNavigationProp<AppStackParams>;
 
 const GenreGrid: FC<IGenreGridProps> = ({ genres }) => {
-  const { colors } = useTheme();
   const navigation = useNavigation<INavigationProps>();
   return (
     <FlatList

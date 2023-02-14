@@ -1,11 +1,10 @@
-import { ActivityIndicator, Image, StyleSheet, Text, View } from "react-native";
-import React, { FC, useState } from "react";
-import { Anime } from "../../models";
+import React, { FC } from "react";
+import { Image, StyleSheet, View } from "react-native";
+import { useTheme } from "@react-navigation/native";
 import dayjs from "dayjs";
 
 import { Typography } from "../Typography";
 import { Spacer } from "../Spacer";
-import { useTheme } from "@react-navigation/native";
 import { Box } from "../Box";
 import { ICollectionAnime } from "../../types/types";
 

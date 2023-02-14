@@ -1,21 +1,12 @@
-import {
-  Dimensions,
-  FlatList,
-  Image,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
 import React, { FC, useContext } from "react";
-import { ICollectionAnime } from "../../types/types";
+import { FlatList, Pressable, StyleSheet } from "react-native";
+import { useNavigation, useTheme } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+
 import { Box } from "../Box";
 import { Typography } from "../Typography";
 import { CollectionsContext } from "../../context/CollectionsContext";
-import dayjs from "dayjs";
-import { Spacer } from "../Spacer";
-import { useNavigation, useTheme } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+
 import { AppStackParams } from "../../types/navigation";
 import { AnimeCollectionCover } from "../AnimeCollectionCover";
 

@@ -1,11 +1,12 @@
-import { StyleSheet, Image, View, Dimensions } from "react-native";
 import React, { FC } from "react";
+import { StyleSheet, Image } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { useTheme } from "@react-navigation/native";
+
 import { Anime } from "../../models";
 import { Box } from "../Box";
 import { Typography } from "../Typography";
 import { Spacer } from "../Spacer";
-import { Ionicons } from "@expo/vector-icons";
-import { useTheme } from "@react-navigation/native";
 import { shortenNumber } from "../../utils/number";
 
 interface IAnimeHorizontalProps {

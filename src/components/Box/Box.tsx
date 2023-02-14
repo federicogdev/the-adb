@@ -1,7 +1,6 @@
 import {
   FlexAlignType,
   StyleSheet,
-  Text,
   TextStyle,
   View,
   ViewProps,

@@ -12,7 +12,6 @@ import { useTheme } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useQuery } from "@tanstack/react-query";
 import { AppStackParams } from "../../types/navigation";
-import { Ionicons } from "@expo/vector-icons";
 
 import { fetchAnimes, searchAnimes } from "../../utils/api";
 import { SafeArea } from "../../components/SafeArea";
@@ -22,7 +21,6 @@ import { Typography } from "../../components/Typography";
 import { TopAnimeFilter } from "../../models";
 import { AnimeHorizontal } from "../../components/AnimeHorizontal";
 import { SearchContext } from "../../context/SearchContext";
-import { Chip } from "../../components/Chip";
 
 interface ISearchScreenProps {
   navigation: NativeStackNavigationProp<AppStackParams, "AppTabs">;

@@ -4,13 +4,11 @@ import {
   FlatList,
   StyleSheet,
   Pressable,
-  Animated,
-  View,
 } from "react-native";
 import React, { FC } from "react";
 import axios from "axios";
 import { JikanResponse, Anime } from "../../models";
-import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { SafeArea } from "../../components/SafeArea";
 import { AnimeCover } from "../../components/AnimeCover";
 import { RouteProp, useTheme } from "@react-navigation/native";

@@ -3,11 +3,9 @@ import {
   ActivityIndicator,
   ScrollView,
   StyleSheet,
-  Image,
   View,
   Pressable,
   ImageBackground,
-  TouchableOpacity,
 } from "react-native";
 import { RouteProp, useTheme } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -21,10 +19,7 @@ import { Box } from "../../components/Box";
 import { Typography } from "../../components/Typography";
 import { Spacer } from "../../components/Spacer";
 import { shortenNumber } from "../../utils/number";
-import dayjs from "dayjs";
 import { Chip } from "../../components/Chip";
-import { CollectionsContext } from "../../context/CollectionsContext";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface IAnimeDetailsScreenProps {
   navigation: NativeStackNavigationProp<AppStackParams, "AnimeDetailsScreen">;

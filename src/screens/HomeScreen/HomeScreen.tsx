@@ -19,7 +19,7 @@ import { fetchAnimes } from "../../utils/api";
 import { Box } from "../../components/Box";
 import { SafeArea } from "../../components/SafeArea";
 import { AnimeCover } from "../../components/AnimeCover";
-import { Spacer } from "../../components/Spacer";
+
 import { Typography } from "../../components/Typography";
 import { genres } from "../../data/genres";
 import { GenreGrid } from "../../components/GenreGrid";

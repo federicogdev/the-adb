@@ -1,18 +1,11 @@
-import {
-  Dimensions,
-  FlatList,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { Dimensions, FlatList, Pressable, StyleSheet } from "react-native";
 import React, { FC, useContext } from "react";
 import { RouteProp } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { AppStackParams } from "../../types/navigation";
 import { CollectionsContext } from "../../context/CollectionsContext";
 import { SafeArea } from "../../components/SafeArea";
-import { Typography } from "../../components/Typography";
+
 import { AnimeCollectionCover } from "../../components/AnimeCollectionCover";
 
 interface IAnimesByCollectionsScreenProps {

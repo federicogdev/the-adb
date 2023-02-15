@@ -9,25 +9,21 @@ import { CollectionList } from "../../components/CollectionList";
 interface Props {}
 
 const CollectionsScreen = (props: Props) => {
-  const {
-    // bookmarks,
-    // collection,
-    animesCollection,
-    // finishedAnimes,
-    // plannedAnimes,
-    // interruptedAnimes,
-    // watchingAnimes,
-  } = useContext(CollectionsContext);
+  const { animesCollection } = useContext(CollectionsContext);
 
   const { colors } = useTheme();
 
   return (
     <SafeArea>
       <ScrollView>
-        <CollectionList collection="finished" />
-        <CollectionList collection="planned" />
-        <CollectionList collection="interrupted" />
-        <CollectionList collection="watching" />
+        {animesCollection.filter((e) => e.category === "finished").length >
+          0 && <CollectionList collection="finished" />}
+        {animesCollection.filter((e) => e.category === "planned").length >
+          0 && <CollectionList collection="planned" />}
+        {animesCollection.filter((e) => e.category === "interrupted").length >
+          0 && <CollectionList collection="interrupted" />}
+        {animesCollection.filter((e) => e.category === "watching").length >
+          0 && <CollectionList collection="watching" />}
       </ScrollView>
     </SafeArea>
   );

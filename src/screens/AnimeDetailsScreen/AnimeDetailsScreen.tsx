@@ -20,6 +20,7 @@ import { Typography } from "../../components/Typography";
 import { Spacer } from "../../components/Spacer";
 import { shortenNumber } from "../../utils/number";
 import { Chip } from "../../components/Chip";
+import dayjs from "dayjs";
 
 interface IAnimeDetailsScreenProps {
   navigation: NativeStackNavigationProp<AppStackParams, "AnimeDetailsScreen">;
@@ -179,7 +180,52 @@ const AnimeDetailsScreen: FC<IAnimeDetailsScreenProps> = ({
                   })
                 }
               >
-                <Chip style={{ marginRight: 10, padding: 10 }}>
+                <Chip style={styles.chip}>
+                  <Typography>{el.name}</Typography>
+                </Chip>
+              </Pressable>
+            ))}
+          </View>
+        </Box>
+
+        {/*AIRING STATUS*/}
+        <Box mTop={20} pX={15} flexDirection="column">
+          <Box mBottom={10}>
+            <Typography variant="bold" size={13} color="subtext">
+              AIRING STATUS
+            </Typography>
+          </Box>
+          <Typography>{animeDetails.data?.data.status}</Typography>
+        </Box>
+
+        {/*AIRING DATES */}
+        <Box mTop={20} pX={15} flexDirection="column">
+          <Box mBottom={10}>
+            <Typography variant="bold" size={13} color="subtext">
+              AIRING DATES
+            </Typography>
+          </Box>
+          <Typography>
+            {dayjs(animeDetails.data?.data.aired.from).format("MMMM D, YYYY")}{" "}
+            to{" "}
+            {animeDetails.data?.data.aired.to
+              ? dayjs(animeDetails.data?.data.aired.to).format("MMMM D, YYYY")
+              : "N/A"}
+          </Typography>
+        </Box>
+
+        {/* STUDIO */}
+        <Box mTop={20} pX={15} flexDirection="column">
+          <Box mBottom={10}>
+            <Typography variant="bold" size={13} color="subtext">
+              PRODUCERS
+            </Typography>
+          </Box>
+
+          <View style={styles.chipContainer}>
+            {animeDetails.data?.data.producers.map((el) => (
+              <Pressable>
+                <Chip style={styles.chip}>
                   <Typography>{el.name}</Typography>
                 </Chip>
               </Pressable>
@@ -201,24 +247,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   title: { textAlign: "center" },
-  chip: {
-    borderRadius: 5,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 1.0,
 
-    elevation: 1,
-  },
   chipContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "flex-start",
   },
-
+  chip: { marginRight: 10, padding: 7.5 },
   container: {
     width: 166,
     aspectRatio: 4 / 6,

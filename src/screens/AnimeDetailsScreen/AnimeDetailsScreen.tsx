@@ -160,6 +160,32 @@ const AnimeDetailsScreen: FC<IAnimeDetailsScreenProps> = ({
           </Box>
           <Typography>{animeDetails.data?.data.synopsis}</Typography>
         </Box>
+
+        {/* GENRES */}
+        <Box mTop={20} pX={15} flexDirection="column">
+          <Box mBottom={10}>
+            <Typography variant="bold" size={13} color="subtext">
+              GENRES
+            </Typography>
+          </Box>
+
+          <View style={styles.chipContainer}>
+            {animeDetails.data?.data.genres.map((el) => (
+              <Pressable
+                onPress={() =>
+                  navigation.push("AnimesByGenresScreen", {
+                    id: el.mal_id,
+                    genre: el.name,
+                  })
+                }
+              >
+                <Chip style={{ marginRight: 10, padding: 10 }}>
+                  <Typography>{el.name}</Typography>
+                </Chip>
+              </Pressable>
+            ))}
+          </View>
+        </Box>
       </ScrollView>
     </SafeArea>
   );

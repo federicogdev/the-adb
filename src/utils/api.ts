@@ -1,6 +1,12 @@
 import axios from "axios";
 import { Genre } from "../data/genres";
-import { Anime, JikanResponse, Statistics, TopAnimeFilter } from "../models";
+import {
+  Anime,
+  AnimeCharacter,
+  JikanResponse,
+  Statistics,
+  TopAnimeFilter,
+} from "../models";
 
 export const fetchAnimes = (
   filter: TopAnimeFilter,
@@ -28,4 +34,11 @@ export const fetchAnimeStatistics = (
 export const searchAnimes = (q: string): Promise<JikanResponse<Anime[]>> =>
   axios
     .get(`https://api.jikan.moe/v4/anime?q=${q}&order_by=members&sort=desc`)
+    .then((res) => res.data);
+
+export const fetchAnimeCharacters = (
+  _id: number
+): Promise<JikanResponse<AnimeCharacter[]>> =>
+  axios
+    .get(`https://api.jikan.moe/v4/anime/${_id}/characters&limit=20`)
     .then((res) => res.data);

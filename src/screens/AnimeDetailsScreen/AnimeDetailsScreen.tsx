@@ -6,6 +6,8 @@ import {
   View,
   Pressable,
   ImageBackground,
+  Image,
+  FlatList,
 } from "react-native";
 import { RouteProp, useTheme } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -14,7 +16,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { AppStackParams } from "../../types/navigation";
 import { SafeArea } from "../../components/SafeArea";
 import { useQuery } from "@tanstack/react-query";
-import { fetchAnimeDetails } from "../../utils/api";
+import { fetchAnimeCharacters, fetchAnimeDetails } from "../../utils/api";
 import { Box } from "../../components/Box";
 import { Typography } from "../../components/Typography";
 import { Spacer } from "../../components/Spacer";
@@ -37,7 +39,11 @@ const AnimeDetailsScreen: FC<IAnimeDetailsScreenProps> = ({
     fetchAnimeDetails(id)
   );
 
-  if (animeDetails.isLoading && animeDetails.isLoading) {
+  const animeCharacters = useQuery(["animeCharacters", id], () =>
+    fetchAnimeCharacters(id)
+  );
+
+  if (animeDetails.isLoading && animeCharacters.isLoading) {
     return (
       <SafeArea>
         <Box flex justify="center" align="center">
@@ -232,6 +238,59 @@ const AnimeDetailsScreen: FC<IAnimeDetailsScreenProps> = ({
             ))}
           </View>
         </Box>
+
+        {/* CHARACTERS */}
+        <Box mTop={20} pX={15} flexDirection="column">
+          <Box mBottom={10}>
+            <Typography variant="bold" size={13} color="subtext">
+              CHARACTERS
+            </Typography>
+          </Box>
+
+          {/* <View>
+            {animeCharacters.data?.data.map((el) => (
+              <Pressable
+              // onPress={() =>
+              //   navigation.push("AnimesByGenresScreen", {
+              //     id: el.character.mal_id,
+              //     genre: el.character.name,
+              //   })
+              // }
+              >
+                <View style={{ aspectRatio: 4 / 6, width: 120, height: 200 }}>
+                  <Image
+                    source={{ uri: el.character.images.jpg.image_url }}
+                    style={{ width: 120, height: 200 }}
+                  />
+                  <Typography>{el.character.name}</Typography>
+                </View>
+              </Pressable>
+            ))}
+          </View> */}
+
+          <FlatList
+            data={animeCharacters.data?.data.slice(0, 25)}
+            horizontal
+            renderItem={({ item }) => (
+              <Pressable
+              // onPress={() =>
+              //   navigation.push("AnimesByGenresScreen", {
+              //     id: el.character.mal_id,
+              //     genre: el.character.name,
+              //   })
+              // }
+              >
+                <View style={{ width: 120, maxWidth: 120 }}>
+                  <Image
+                    source={{ uri: item.character.images.jpg.image_url }}
+                    style={{ width: 120, height: 200 }}
+                  />
+                  <Typography>{item.character.name}</Typography>
+                </View>
+              </Pressable>
+            )}
+          />
+        </Box>
       </ScrollView>
     </SafeArea>
   );
@@ -253,7 +312,7 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     justifyContent: "flex-start",
   },
-  chip: { marginRight: 10, padding: 7.5 },
+  chip: { marginRight: 10, padding: 7.5, marginBottom: 5 },
   container: {
     width: 166,
     aspectRatio: 4 / 6,
